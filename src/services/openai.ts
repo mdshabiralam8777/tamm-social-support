@@ -30,7 +30,7 @@ export async function helpMeWrite(prompt: string) {
           { role: "user", content: prompt },
         ],
         temperature: 0.6,
-        max_tokens: 220,
+        max_tokens: 50,
       },
       {
         signal: controller.signal,
