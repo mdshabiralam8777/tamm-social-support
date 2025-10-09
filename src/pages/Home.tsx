@@ -14,12 +14,13 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import services from "../assets/mock/services.json";
 
 type Category = {
   ID: string;
-  Title: string;
-  Description: string;
+  titleKey: string;
+  descriptionKey: string;
   DefaultIcon: string;
 };
 
@@ -27,11 +28,12 @@ const categories: Category[] = services;
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [comingOpen, setComingOpen] = useState(false);
   const [selected, setSelected] = useState<Category | null>(null);
 
   const handleOpen = (cat: Category) => {
-    if (cat.Title === "Social Support") {
+    if (cat.ID === "social-support") {
       navigate("/apply");
     } else {
       setSelected(cat);
@@ -47,12 +49,12 @@ const Home: React.FC = () => {
           color="text.secondary"
           fontFamily={`CircularStd, Noto Kufi Arabic`}
         >
-          Apply for assistance with a simple, guided form.
+          {t("homeHeader")}
         </Typography>
       </Box>
 
       <Box textAlign="left" sx={{ mb: 2 }}>
-        <Typography variant="h4">List of Services</Typography>
+        <Typography variant="h4">{t("servicesList")}</Typography>
       </Box>
 
       <Grid container spacing={3} alignItems="stretch">
@@ -86,14 +88,14 @@ const Home: React.FC = () => {
                   <Box
                     component="img"
                     src={c.DefaultIcon}
-                    alt=""
+                    alt="image"
                     sx={{ width: 36, height: 36 }}
                   />
                   <Typography
                     variant="h6"
                     sx={{ lineHeight: 1.25, fontWeight: 600 }}
                   >
-                    {c.Title}
+                    {t(c.titleKey)}
                   </Typography>
                 </Box>
                 <Typography
@@ -108,19 +110,19 @@ const Home: React.FC = () => {
                     whiteSpace: "normal",
                   }}
                 >
-                  {c.Description}
+                  {t(c.descriptionKey)}
                 </Typography>
               </CardContent>
 
               <CardActions sx={{ p: 2, pt: 0 }}>
-                {c.Title === "Social Support" ? (
+                {c.ID === "social-support" ? (
                   <Button
                     component={RouterLink}
                     to="/apply"
                     variant="contained"
                     fullWidth
                   >
-                    Open
+                    {t("open")}
                   </Button>
                 ) : (
                   <Button
@@ -128,7 +130,7 @@ const Home: React.FC = () => {
                     fullWidth
                     onClick={() => handleOpen(c)}
                   >
-                    Open
+                    {t("open")}
                   </Button>
                 )}
               </CardActions>
@@ -137,25 +139,25 @@ const Home: React.FC = () => {
         ))}
       </Grid>
 
-      {/* Common dialog */}
       <Dialog
         open={comingOpen}
         onClose={() => setComingOpen(false)}
         aria-labelledby="coming-soon-title"
       >
-        <DialogTitle id="coming-soon-title">Coming soon</DialogTitle>
+        <DialogTitle id="coming-soon-title">{t("comingSoon")}</DialogTitle>
         <DialogContent>
           <Typography variant="body1" sx={{ mb: 1.5 }}>
-            {selected?.Title} is not available yet. We’re working hard to bring
-            this service online.
+            {t("comingSoonMsg", { serviceName: t(selected?.titleKey || "") })}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            In the meantime, you can explore other services or apply for Social
-            Support.
+            {t("comingSoonSubMsg", {
+              defaultValue:
+                "In the meantime, you can explore other services or apply for Social Support.",
+            })}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setComingOpen(false)}>Close</Button>
+          <Button onClick={() => setComingOpen(false)}>{t("close")}</Button>
           <Button
             variant="contained"
             onClick={() => {
@@ -163,7 +165,7 @@ const Home: React.FC = () => {
               navigate("/apply");
             }}
           >
-            Apply for Social Support
+            {t("applyNow")}
           </Button>
         </DialogActions>
       </Dialog>

@@ -6,55 +6,51 @@ import {
   useFormContext,
   type ControllerFieldState,
 } from "react-hook-form";
+import { useTranslation } from "react-i18next"; // ✨ ADDED
 import HelpMeWriteDialog from "../../components/HelpMeWriteDialog";
-
-// 1. Define the configuration for the fields in this step
-const formFields = [
-  {
-    id: "financial",
-    name: "situation.financialSituation",
-    label: "Current Financial Situation",
-    placeholder: "Describe your current financial situation...",
-    ariaLabel: "Help me write: financial situation",
-    seedText:
-      "Describe current financial situation for a social support application. Keep it factual, respectful, and concise (120-160 words).",
-  },
-  {
-    id: "employment",
-    name: "situation.employmentCircumstances",
-    label: "Employment Circumstances",
-    placeholder: "Describe your employment situation...",
-    ariaLabel: "Help me write: employment circumstances",
-    seedText:
-      "Describe employment circumstances (unemployed/looking/part-time/etc.), recent changes, and constraints in a respectful tone (80-140 words).",
-  },
-  {
-    id: "reason",
-    name: "situation.reasonForApplying",
-    label: "Reason for Applying",
-    placeholder: "Why are you applying for assistance?",
-    ariaLabel: "Help me write: reason for applying",
-    seedText:
-      "Explain the primary reason for applying for financial assistance, including responsibilities and intended use of funds (80-140 words).",
-  },
-];
-
-// Define a type for our field ID for better type safety
-type FieldId = (typeof formFields)[number]["id"];
 
 const Step3: React.FC = () => {
   const { control, setValue, getValues } = useFormContext();
+  const { t } = useTranslation(); // ✨ ADDED
+
+  const formFields = [
+    {
+      id: "financial",
+      name: "situation.financialSituation",
+      label: t("form.step3.financialSituation"),
+      placeholder: t("form.step3.placeholders.financial"),
+      seedText:
+        "Describe current financial situation for a social support application. Keep it factual, respectful, and concise (120-160 words).",
+    },
+    {
+      id: "employment",
+      name: "situation.employmentCircumstances",
+      label: t("form.step3.employmentCircumstances"),
+      placeholder: t("form.step3.placeholders.employment"),
+      seedText:
+        "Describe employment circumstances (unemployed/looking/part-time/etc.), recent changes, and constraints in a respectful tone (80-140 words).",
+    },
+    {
+      id: "reason",
+      name: "situation.reasonForApplying",
+      label: t("form.step3.reasonForApplying"),
+      placeholder: t("form.step3.placeholders.reason"),
+      seedText:
+        "Explain the primary reason for applying for financial assistance, including responsibilities and intended use of funds (80-140 words).",
+    },
+  ];
+
+  type FieldId = (typeof formFields)[number]["id"];
+
   const [openFieldId, setOpenFieldId] = useState<FieldId | null>(null);
 
   const show = (fieldState: ControllerFieldState) =>
     !!fieldState.error && (fieldState.isTouched || fieldState.isDirty);
 
-  // Find the configuration for the currently active/open field
   const activeField = formFields.find((f) => f.id === openFieldId);
 
   return (
     <Grid container spacing={2}>
-      {/* 2. Map over the config to render each text field */}
       {formFields.map((config) => (
         <Grid key={config.name} sx={{ flexBasis: "100%", maxWidth: "100%" }}>
           <Controller
@@ -73,9 +69,9 @@ const Step3: React.FC = () => {
                 helperText={show(fieldState) ? fieldState.error?.message : " "}
                 InputProps={{
                   endAdornment: (
-                    <Tooltip title="Help Me Write">
+                    <Tooltip title={t("helpMeWrite")}>
                       <IconButton
-                        aria-label={config.ariaLabel}
+                        aria-label={t("helpMeWrite")}
                         onClick={() => setOpenFieldId(config.id)}
                         size="small"
                       >
@@ -90,7 +86,6 @@ const Step3: React.FC = () => {
         </Grid>
       ))}
 
-      {/* 3. Render a SINGLE dialog, conditionally based on activeField */}
       {activeField && (
         <HelpMeWriteDialog
           open={!!activeField}

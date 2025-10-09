@@ -1,10 +1,13 @@
 import React from "react";
 import { AppBar, Toolbar, Box, Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { useTranslation } from "react-i18next"; // ✨ ADDED
 import LanguageSwitch from "./LanguageSwitch";
 import logo from "../assets/svgs/tamm-log.svg";
 
 const NavBar: React.FC = () => {
+  const { t } = useTranslation(); // ✨ ADDED
+
   return (
     <AppBar
       position="sticky"
@@ -20,17 +23,19 @@ const NavBar: React.FC = () => {
           gap: 2,
         }}
       >
-        <Box
-          component="img"
-          src={logo}
-          alt="TAMM"
-          sx={{
-            height: 36,
-            width: "auto",
-            cursor: "pointer",
-          }}
-          onClick={() => (window.location.href = "/")}
-        />
+        {/* ✨ CHANGED: Wrapped with RouterLink for better SPA navigation */}
+        <RouterLink to="/">
+          <Box
+            component="img"
+            src={logo}
+            alt={t("brand")} // ✨ CHANGED
+            sx={{
+              height: 36,
+              width: "auto",
+              display: "block", // Ensures proper layout within the link
+            }}
+          />
+        </RouterLink>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Button
@@ -39,7 +44,7 @@ const NavBar: React.FC = () => {
             color="inherit"
             aria-label="Go to Home"
           >
-            Home
+            {t("home")} {/* ✨ CHANGED */}
           </Button>
           <Button
             component={RouterLink}
@@ -47,7 +52,7 @@ const NavBar: React.FC = () => {
             variant="contained"
             aria-label="Start Application"
           >
-            Apply
+            {t("applyNow")} {/* ✨ CHANGED */}
           </Button>
           <LanguageSwitch />
         </Box>

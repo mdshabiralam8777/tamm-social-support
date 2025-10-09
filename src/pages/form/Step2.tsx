@@ -5,65 +5,70 @@ import {
   useFormContext,
   type ControllerFieldState,
 } from "react-hook-form";
-
-// 1. Define all fields in a configuration array
-const formFields = [
-  {
-    name: "family.maritalStatus",
-    label: "Marital Status",
-    type: "select",
-    options: [
-      { value: "single", label: "Single" },
-      { value: "married", label: "Married" },
-      { value: "divorced", label: "Divorced" },
-      { value: "widowed", label: "Widowed" },
-    ],
-  },
-  {
-    name: "family.dependents",
-    label: "Dependents",
-    type: "number",
-    inputProps: { min: 0 },
-  },
-  {
-    name: "family.employmentStatus",
-    label: "Employment Status",
-    type: "select",
-    options: [
-      { value: "employed", label: "Employed" },
-      { value: "unemployed", label: "Unemployed" },
-      { value: "student", label: "Student" },
-      { value: "retired", label: "Retired" },
-    ],
-  },
-  {
-    name: "family.monthlyIncome",
-    label: "Monthly Income",
-    type: "number",
-    inputProps: { min: 0, step: 100 },
-  },
-  {
-    name: "family.housingStatus",
-    label: "Housing Status",
-    type: "select",
-    options: [
-      { value: "rent", label: "Rent" },
-      { value: "own", label: "Own" },
-      { value: "family", label: "Family" },
-      { value: "other", label: "Other" },
-    ],
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const Step2: React.FC = () => {
   const { control } = useFormContext();
+  const { t } = useTranslation();
+  const formFields = [
+    {
+      name: "family.maritalStatus",
+      label: t("form.step2.maritalStatus"),
+      type: "select",
+      options: [
+        { value: "single", label: t("form.step2.maritalOptions.single") },
+        { value: "married", label: t("form.step2.maritalOptions.married") },
+        { value: "divorced", label: t("form.step2.maritalOptions.divorced") },
+        { value: "widowed", label: t("form.step2.maritalOptions.widowed") },
+      ],
+    },
+    {
+      name: "family.dependents",
+      label: t("form.step2.dependents"),
+      type: "number",
+      inputProps: { min: 0 },
+    },
+    {
+      name: "family.employmentStatus",
+      label: t("form.step2.employmentStatus"),
+      type: "select",
+      options: [
+        {
+          value: "employed",
+          label: t("form.step2.employmentOptions.employed"),
+        },
+        {
+          value: "unemployed",
+          label: t("form.step2.employmentOptions.unemployed"),
+        },
+        { value: "student", label: t("form.step2.employmentOptions.student") },
+        { value: "retired", label: t("form.step2.employmentOptions.retired") },
+      ],
+    },
+    {
+      name: "family.monthlyIncome",
+      label: t("form.step2.monthlyIncome"),
+      type: "number",
+      inputProps: { min: 0, step: 100 },
+    },
+    {
+      name: "family.housingStatus",
+      label: t("form.step2.housingStatus"),
+      type: "select",
+      options: [
+        { value: "rent", label: t("form.step2.housingOptions.rent") },
+        { value: "own", label: t("form.step2.housingOptions.own") },
+        { value: "family", label: t("form.step2.housingOptions.family") },
+        { value: "other", label: t("form.step2.housingOptions.other") },
+      ],
+    },
+  ];
 
   const show = (fieldState: ControllerFieldState) =>
     !!fieldState.error && (fieldState.isTouched || fieldState.isDirty);
 
   return (
     <Grid container spacing={2}>
-      {/* 2. Map over the array to render each field */}
       {formFields.map((config) => (
         <Grid sx={{ xs: 12, md: 6 }} key={config.name} minWidth="150px">
           <Controller

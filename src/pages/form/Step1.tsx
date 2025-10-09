@@ -1,43 +1,43 @@
 import React from "react";
-import { Grid, TextField, MenuItem } from "@mui/material";
+import { TextField, MenuItem } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import { Controller, useFormContext } from "react-hook-form";
-
-// 1. Define all your fields in a configuration array.
-const formFields = [
-  { name: "personal.name", label: "Name", type: "text" },
-  {
-    name: "personal.nationalId",
-    label: "National ID",
-    type: "text",
-    inputMode: "numeric",
-  },
-  { name: "personal.dob", label: "Date of Birth", type: "date" },
-  {
-    name: "personal.gender",
-    label: "Gender",
-    type: "select",
-    options: [
-      { value: "male", label: "Male" },
-      { value: "female", label: "Female" },
-      { value: "other", label: "Other" },
-    ],
-  },
-  { name: "personal.address", label: "Address", type: "text" },
-  { name: "personal.city", label: "City", type: "text" },
-  { name: "personal.state", label: "State", type: "text" },
-  { name: "personal.country", label: "Country", type: "text" },
-  { name: "personal.phone", label: "Phone", type: "tel" },
-  { name: "personal.email", label: "Email", type: "email" },
-];
+import { useTranslation } from "react-i18next";
 
 const Step1: React.FC = () => {
   const { control } = useFormContext();
+  const { t } = useTranslation();
+
+  const formFields = [
+    { name: "personal.name", label: t("form.step1.name"), type: "text" },
+    {
+      name: "personal.nationalId",
+      label: t("form.step1.nationalId"),
+      type: "text",
+    },
+    { name: "personal.dob", label: t("form.step1.dob"), type: "date" },
+    {
+      name: "personal.gender",
+      label: t("form.step1.gender"),
+      type: "select",
+      options: [
+        { value: "male", label: t("form.step1.genderOptions.male") },
+        { value: "female", label: t("form.step1.genderOptions.female") },
+        { value: "other", label: t("form.step1.genderOptions.other") },
+      ],
+    },
+    { name: "personal.address", label: t("form.step1.address"), type: "text" },
+    { name: "personal.city", label: t("form.step1.city"), type: "text" },
+    { name: "personal.state", label: t("form.step1.state"), type: "text" },
+    { name: "personal.country", label: t("form.step1.country"), type: "text" },
+    { name: "personal.phone", label: t("form.step1.phone"), type: "tel" },
+    { name: "personal.email", label: t("form.step1.email"), type: "email" },
+  ];
 
   return (
     <Grid container spacing={2}>
-      {/* 2. Map over the array to render each field */}
       {formFields.map((fieldConfig) => (
-        <Grid sx={{ xs: 12, md: 6 }} key={fieldConfig.name} minWidth="150px">
+        <Grid size={{ xs: 12, md: 6 }} key={fieldConfig.name}>
           <Controller
             name={fieldConfig.name}
             control={control}
@@ -56,8 +56,7 @@ const Step1: React.FC = () => {
                   fullWidth
                   required
                   InputLabelProps={{
-                    // Shrink label for date type to prevent overlap
-                    shrink: fieldConfig.type === "date" || field.value,
+                    shrink: fieldConfig.type === "date" || !!field.value,
                   }}
                   error={showError}
                   helperText={showError ? fieldState.error?.message : " "}

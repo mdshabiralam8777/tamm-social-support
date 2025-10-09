@@ -1,10 +1,12 @@
 import React from "react";
 import { Box, Typography, Button, Paper } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const SubmissionSuccess: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   const reference = location.state?.reference ?? "N/A";
 
   return (
@@ -28,10 +30,10 @@ const SubmissionSuccess: React.FC = () => {
         }}
       >
         <Typography variant="h4" gutterBottom color="success.main">
-          Request Submitted Successfully 🎉
+          {t("submissionPage.title")}
         </Typography>
         <Typography variant="body1" sx={{ mb: 2 }}>
-          Your social support application has been submitted successfully.
+          {t("submissionPage.body")}
         </Typography>
         <Typography
           variant="h6"
@@ -43,13 +45,13 @@ const SubmissionSuccess: React.FC = () => {
             fontFamily: "monospace",
           }}
         >
-          Reference No: <strong>{reference}</strong>
+          {t("submissionPage.ref")} <strong>{reference}</strong>
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-          Please save this reference number for your records.
+          {t("submissionPage.save")}
         </Typography>
         <Button variant="contained" onClick={() => navigate("/")} size="large">
-          Back to Home
+          {t("submissionPage.home")}
         </Button>
       </Paper>
     </Box>

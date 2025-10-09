@@ -7,8 +7,10 @@ import Wizard from "./pages/form/Wizard";
 
 import banner from "./assets/InnerBannerLightBG.jpg";
 import SubmissionSuccess from "./pages/form/SubmissionSuccess";
+import { useTranslation } from "react-i18next";
 
 const App: React.FC = () => {
+  const { t } = useTranslation();
   return (
     <BrowserRouter>
       <CssBaseline />
@@ -36,7 +38,7 @@ const App: React.FC = () => {
             fontFamily: `CircularStd, Noto Kufi Arabic`,
           }}
         >
-          Abu Dhabi Government Services
+          {t("mainBanner")}
         </Typography>
       </Box>
       <Container sx={{ py: 3 }}>

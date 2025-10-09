@@ -1,10 +1,12 @@
 import React from "react";
 import { Stepper, Step, StepLabel } from "@mui/material";
-import { useTranslation } from "react-i18next";
 
-const FormStepper: React.FC<{ activeStep: number }> = ({ activeStep }) => {
-  const { t } = useTranslation();
-  const steps = [t("steps.personal"), t("steps.family"), t("steps.situation")];
+interface FormStepperProps {
+  activeStep: number;
+  steps: string[];
+}
+
+const FormStepper: React.FC<FormStepperProps> = ({ activeStep, steps }) => {
   return (
     <Stepper
       activeStep={activeStep}

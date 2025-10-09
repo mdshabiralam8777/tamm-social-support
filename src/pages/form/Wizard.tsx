@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 import FormStepper from "../../components/FormStepper";
 import { useFormPersist } from "../../hooks/useFormPersist";
 import { submitApplication } from "../../services/api";
@@ -32,6 +33,7 @@ const steps = [<Step1 />, <Step2 />, <Step3 />];
 const STEP_SECTIONS = ["personal", "family", "situation"] as const;
 
 const Wizard: React.FC = () => {
+  const { t } = useTranslation();
   const methods = useForm<ApplicationFormType>({
     defaultValues: DEFAULT_VALUES,
     resolver: zodResolver(applicationSchema),
@@ -71,13 +73,12 @@ const Wizard: React.FC = () => {
     setLoading(true);
     const res = await submitApplication(data);
 
-    // simulate processing delay (2–3 seconds)
     setTimeout(() => {
       setLoading(false);
 
       if (res.status === 200) {
         localStorage.removeItem("tamm:ss:draft");
-        notify("Application submitted", "success");
+        notify(t("submitted"), "success");
 
         const ref = `REQ-${new Date().getFullYear()}${String(
           new Date().getMonth() + 1
@@ -88,7 +89,7 @@ const Wizard: React.FC = () => {
 
         navigate("/submitted", { state: { reference: ref } });
       } else {
-        notify("Submission failed", "error");
+        notify(t("submissionFailed"), "error");
       }
     }, 2500);
   });
@@ -104,10 +105,16 @@ const Wizard: React.FC = () => {
     checkValidity();
   }, [JSON.stringify(watchedValues), active, methods, currentStepFields]);
 
+  const stepLabels = [
+    t("steps.personal"),
+    t("steps.family"),
+    t("steps.situation"),
+  ];
+
   return (
     <FormProvider {...methods}>
       <Card>
-        <CardHeader title="Apply for Support" subheader="OPEN | مفتوحة" />
+        <CardHeader title={t("applyNow")} subheader={t("open")} />{" "}
         <CardContent>
           {loading ? (
             <Box
@@ -122,7 +129,7 @@ const Wizard: React.FC = () => {
             >
               <CircularProgress />
               <Typography variant="h6" color="text.secondary">
-                Processing your request...
+                {t("processing")}
               </Typography>
             </Box>
           ) : (
@@ -134,15 +141,12 @@ const Wizard: React.FC = () => {
                   aria-label="Progress"
                 />
               </Box>
-              <FormStepper activeStep={active} />
-              <Divider />
-
+              <FormStepper activeStep={active} steps={stepLabels} /> <Divider />
               {steps[active]}
-
               <Divider />
               <Stack direction="row" gap={2} justifyContent="space-between">
                 <Button disabled={active === 0} onClick={back}>
-                  Back
+                  {t("back")}
                 </Button>
                 {active < steps.length - 1 ? (
                   <Button
@@ -150,7 +154,7 @@ const Wizard: React.FC = () => {
                     onClick={next}
                     disabled={!canProceed}
                   >
-                    Next
+                    {t("next")}
                   </Button>
                 ) : (
                   <Button
@@ -158,7 +162,7 @@ const Wizard: React.FC = () => {
                     onClick={onSubmit}
                     disabled={loading || !canProceed}
                   >
-                    Submit Application
+                    {t("submit")}
                   </Button>
                 )}
               </Stack>
