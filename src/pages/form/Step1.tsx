@@ -2,240 +2,77 @@ import React from "react";
 import { Grid, TextField, MenuItem } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
+// 1. Define all your fields in a configuration array.
+const formFields = [
+  { name: "personal.name", label: "Name", type: "text" },
+  {
+    name: "personal.nationalId",
+    label: "National ID",
+    type: "text",
+    inputMode: "numeric",
+  },
+  { name: "personal.dob", label: "Date of Birth", type: "date" },
+  {
+    name: "personal.gender",
+    label: "Gender",
+    type: "select",
+    options: [
+      { value: "male", label: "Male" },
+      { value: "female", label: "Female" },
+      { value: "other", label: "Other" },
+    ],
+  },
+  { name: "personal.address", label: "Address", type: "text" },
+  { name: "personal.city", label: "City", type: "text" },
+  { name: "personal.state", label: "State", type: "text" },
+  { name: "personal.country", label: "Country", type: "text" },
+  { name: "personal.phone", label: "Phone", type: "tel" },
+  { name: "personal.email", label: "Email", type: "email" },
+];
+
 const Step1: React.FC = () => {
   const { control } = useFormContext();
 
   return (
     <Grid container spacing={2}>
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.name"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                label="Name"
-                fullWidth
-                required
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              />
-            );
-          }}
-        />
-      </Grid>
-
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.nationalId"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                label="National ID"
-                fullWidth
-                required
-                inputProps={{ inputMode: "numeric" }}
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              />
-            );
-          }}
-        />
-      </Grid>
-
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.dob"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                type="date"
-                label="Date of Birth"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                required
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              />
-            );
-          }}
-        />
-      </Grid>
-
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.gender"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                select
-                label="Gender"
-                fullWidth
-                required
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              >
-                <MenuItem value="male">Male</MenuItem>
-                <MenuItem value="female">Female</MenuItem>
-                <MenuItem value="other">Other</MenuItem>
-              </TextField>
-            );
-          }}
-        />
-      </Grid>
-
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.address"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                label="Address"
-                fullWidth
-                required
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              />
-            );
-          }}
-        />
-      </Grid>
-
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.city"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                label="City"
-                fullWidth
-                required
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              />
-            );
-          }}
-        />
-      </Grid>
-
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.state"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                label="State"
-                fullWidth
-                required
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              />
-            );
-          }}
-        />
-      </Grid>
-
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.country"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                label="Country"
-                fullWidth
-                required
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              />
-            );
-          }}
-        />
-      </Grid>
-
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.phone"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                label="Phone"
-                fullWidth
-                inputProps={{ inputMode: "tel" }}
-                required
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              />
-            );
-          }}
-        />
-      </Grid>
-
-      <Grid sx={{ xs: 12, md: 6 }}>
-        <Controller
-          name="personal.email"
-          control={control}
-          render={({ field, fieldState }) => {
-            const showError =
-              !!fieldState.error &&
-              (fieldState.isTouched || fieldState.isDirty);
-            return (
-              <TextField
-                {...field}
-                type="email"
-                label="Email"
-                fullWidth
-                required
-                error={showError}
-                helperText={showError ? fieldState.error?.message : " "}
-              />
-            );
-          }}
-        />
-      </Grid>
+      {/* 2. Map over the array to render each field */}
+      {formFields.map((fieldConfig) => (
+        <Grid sx={{ xs: 12, md: 6 }} key={fieldConfig.name}>
+          <Controller
+            name={fieldConfig.name}
+            control={control}
+            render={({ field, fieldState }) => {
+              const showError =
+                !!fieldState.error &&
+                (fieldState.isTouched || fieldState.isDirty);
+              return (
+                <TextField
+                  {...field}
+                  label={fieldConfig.label}
+                  type={
+                    fieldConfig.type === "select" ? "text" : fieldConfig.type
+                  }
+                  select={fieldConfig.type === "select"}
+                  fullWidth
+                  required
+                  InputLabelProps={{
+                    // Shrink label for date type to prevent overlap
+                    shrink: fieldConfig.type === "date" || field.value,
+                  }}
+                  error={showError}
+                  helperText={showError ? fieldState.error?.message : " "}
+                >
+                  {fieldConfig.options?.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              );
+            }}
+          />
+        </Grid>
+      ))}
     </Grid>
   );
 };
