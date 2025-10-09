@@ -69,16 +69,26 @@ const Home: React.FC = () => {
           >
             <Card
               sx={{
-                bgcolor: "grey.50",
+                bgcolor: "background.paper",
                 borderRadius: 3,
-                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                border: "1px solid",
+                borderColor: "divider",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                height: 200,
+                minHeight: 200,
                 width: "100%",
-                transition: "transform 0.2s ease",
-                "&:hover": { transform: "translateY(-4px)" },
+                transition: (theme) =>
+                  theme.transitions.create(
+                    ["box-shadow", "transform", "border-color"],
+                    { duration: theme.transitions.duration.short }
+                  ),
+                "&:hover": {
+                  boxShadow: (theme) => theme.shadows[6],
+                  transform: "translateY(-6px) scale(1.01)",
+                  borderColor: "primary.light",
+                },
               }}
             >
               <CardContent sx={{ flexGrow: 1 }}>

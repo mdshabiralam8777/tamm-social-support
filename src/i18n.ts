@@ -12,7 +12,7 @@ const resources = {
       next: "Next",
       back: "Back",
       submit: "Submit Application",
-      open: "OPEN | مفتوحة",
+      open: "OPEN",
       processing: "Processing your request...",
       comingSoonSubMsg:
         "In the meantime, you can explore other services or apply for Social Support.",
@@ -158,7 +158,7 @@ const resources = {
       next: "التالي",
       back: "السابق",
       submit: "إرسال الطلب",
-      open: "مفتوحة | OPEN",
+      open: "مفتوحة",
       processing: "جاري معالجة طلبك...",
       comingSoonSubMsg:
         "في هذه الأثناء، يمكنك استكشاف خدمات أخرى أو التقدم بطلب للحصول على الدعم الاجتماعي.",
