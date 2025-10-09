@@ -379,4 +379,5 @@ sequenceDiagram
   U->>W: Interacts with fields
   W->>Z: validate (Arabic messages)
   Z-->>W: errors (Arabic)
+
 ````
