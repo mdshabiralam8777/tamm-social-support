@@ -310,54 +310,53 @@ sequenceDiagram
 
 ### 2) Component/Data Flow inside Wizard
 
-```mermaid
 flowchart LR
-  subgraph Router
-    H[Home.tsx] -->|/apply| W[Wizard.tsx]
-    W -->|/submitted| S[SubmissionSuccess.tsx]
-  end
+subgraph Router
+H[Home.tsx] -->|/apply| W[Wizard.tsx]
+W -->|/submitted| S[SubmissionSuccess.tsx]
+end
 
-  subgraph Wizard.tsx
-    subgraph FormProvider (RHF Context)
-      W1[Step1.tsx]:::cmp
-      W2[Step2.tsx]:::cmp
-      W3[Step3.tsx]:::cmp
-    end
-  end
+subgraph Wizard.tsx
+subgraph FORM_PROVIDER[FormProvider - RHF Context]
+W1[Step1.tsx]:::cmp
+W2[Step2.tsx]:::cmp
+W3[Step3.tsx]:::cmp
+end
+end
 
-  subgraph Schema & Constants
-    SCHEMA[buildApplicationSchema(t)]
-    STEP[STEP_FIELDS]
-    DEFS[DEFAULT_VALUES]
-  end
+subgraph Schema_and_Constants
+SCHEMA[buildApplicationSchema(t)]
+STEP[STEP_FIELDS]
+DEFS[DEFAULT_VALUES]
+end
 
-  subgraph i18n
-    I18N[i18n.ts<br/>translation.json (en/ar)]
-    LANG[LanguageSwitch.tsx]
-  end
+subgraph I18N
+I18NCORE[i18n.ts<br/>translation.json (en/ar)]
+LANG[LanguageSwitch.tsx]
+end
 
-  subgraph Services
-    API[services/api.ts<br/>submitApplication()]
-  end
+subgraph Services
+API[services/api.ts<br/>submitApplication()]
+end
 
-  subgraph Storage
-    PERSIST[useFormPersist.ts<br/>(localStorage)]
-  end
+subgraph Storage
+PERSIST[useFormPersist.ts<br/>(localStorage)]
+end
 
-  H --> W
-  W -->|resolver: zodResolver(schema)| SCHEMA
-  W -->|defaultValues| DEFS
-  W -->|trigger(stepPaths)| STEP
-  W --> PERSIST
-  W --> API
-  W --> I18N
-  LANG --> I18N
-  S --> I18N
+H --> W
+W -->|resolver: zodResolver(schema)| SCHEMA
+W -->|defaultValues| DEFS
+W -->|trigger(stepPaths)| STEP
+W --> PERSIST
+W --> API
+W --> I18NCORE
+LANG --> I18NCORE
+S --> I18NCORE
 
-  classDef cmp fill:#eef7ff,stroke:#4a90e2,stroke-width:1px,color:#0b3a67;
-```
+classDef cmp fill:#eef7ff,stroke:#4a90e2,stroke-width:1px,color:#0b3a67;
 
----
+````
+
 
 ### 3) Language Switch & Validation Messages (i18n-aware Schema)
 
@@ -380,4 +379,4 @@ sequenceDiagram
   U->>W: Interacts with fields
   W->>Z: validate (Arabic messages)
   Z-->>W: errors (Arabic)
-```
+````
