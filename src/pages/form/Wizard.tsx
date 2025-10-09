@@ -1,5 +1,5 @@
+import { useNavigate } from "react-router-dom";
 import React, { useMemo, useState, useEffect } from "react";
-import { useWatch } from "react-hook-form";
 import {
   Box,
   Card,
@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 import FormStepper from "../../components/FormStepper";
 import { useFormPersist } from "../../hooks/useFormPersist";
 import { submitApplication } from "../../services/api";
@@ -46,7 +45,8 @@ const Wizard: React.FC = () => {
     methods.watch,
     methods.reset
   );
-  const watched = useWatch({ control: methods.control }); // watch everything
+  const currentStepFields = STEP_FIELDS[active];
+  const watchedValues = methods.watch(currentStepFields as any);
   const [canProceed, setCanProceed] = useState(false);
 
   const progress = useMemo(() => ((active + 1) / 3) * 100, [active]);
@@ -90,13 +90,15 @@ const Wizard: React.FC = () => {
   });
 
   useEffect(() => {
-    (async () => {
-      const ok = await methods.trigger(STEP_FIELDS[active] as any, {
+    const checkValidity = async () => {
+      const ok = await methods.trigger(currentStepFields as any, {
         shouldFocus: false,
       });
       setCanProceed(ok);
-    })();
-  }, [active, watched, methods]);
+    };
+
+    checkValidity();
+  }, [JSON.stringify(watchedValues), active, methods]);
 
   return (
     <FormProvider {...methods}>

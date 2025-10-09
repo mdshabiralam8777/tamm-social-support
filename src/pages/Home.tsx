@@ -1,3 +1,4 @@
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import {
   Box,
@@ -13,7 +14,6 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
 import services from "../assets/mock/services.json";
 
 type Category = {
