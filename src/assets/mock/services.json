@@ -1,0 +1,62 @@
+[
+  {
+    "ID": "social-support",
+    "Title": "Social Support",
+    "Description": "Apply for financial assistance easily, quickly, and with smart help.",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/support-community-environment.png"
+  },
+  {
+    "ID": "{0134A424-7200-4F8C-94BE-21677E041FEA}",
+    "Title": "Agriculture & Livestock",
+    "Description": "Farms, Livestock and Animals",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/farms-and-livestock.png"
+  },
+  {
+    "ID": "{DCF9CE25-4D55-4045-BE49-3D2A5A5C6171}",
+    "Title": "Housing & Properties",
+    "Description": "Houses, Lands and Real Estate",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/housingandproperties.png"
+  },
+  {
+    "ID": "{E0A6AA91-18FA-4A4C-AF72-24052FF4FDD4}",
+    "Title": "Identity & Citizenship",
+    "Description": "Residency, Identity, Entry Permit, and Work",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/identity-citizenship.png"
+  },
+  {
+    "ID": "{EEE3A848-B63F-44A2-8FF7-57DDFE4D1A99}",
+    "Title": "Police Services",
+    "Description": "Firearm Licencing and Penal and Correctional Institutions related services",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/police-services.png"
+  },
+  {
+    "ID": "{B4D862CC-6347-4F5E-9094-1C43A27E1C58}",
+    "Title": "Drive & Transport",
+    "Description": "Vehicles, Traffic and Driving Services",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/driveandtransport.png"
+  },
+  {
+    "ID": "{35E54844-E163-442B-A268-C50A49D2174B}",
+    "Title": "Work & Education",
+    "Description": "Work, Education, and Training",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/work-and-education.png"
+  },
+  {
+    "ID": "{A9F825E9-6D2F-4494-9DA4-A0B9561C6820}",
+    "Title": "Healthcare Services",
+    "Description": "Health Insurance, Licensing, and Facilities",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/manage-health.png"
+  },
+  {
+    "ID": "{36D3E0B8-8894-4AA5-9157-C7721E885006}",
+    "Title": "Culture & Leisure",
+    "Description": "Tourism, Culture and Diversity",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/culture-and-leisure.png"
+  },
+  {
+    "ID": "{1C067BA8-FA46-4071-B839-FA7EBC71D0C2}",
+    "Title": "Deceased & Inheritance",
+    "Description": "Legislation and Inheritance-related Services",
+    "DefaultIcon": "https://static.tamm.abudhabi/cms-media/Project/TAMM/TAMM-v2/AOL-Icons/deceased-and-inheritance.png"
+  }
+]
