@@ -37,19 +37,26 @@ const Step3: React.FC = () => {
       setOpen(null);
     };
 
+  // helper to control when to show error UI
+  const show = (fs: any) => !!fs.error && (fs.isTouched || fs.isDirty);
+
   return (
     <Grid container spacing={2}>
-      <Grid sx={{ xs: 12, md: 6 }}>
+      {/* Row 1 */}
+      <Grid sx={{ flexBasis: "100%", maxWidth: "100%" }}>
         <Controller
           name="situation.financialSituation"
           control={control}
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <TextField
               {...field}
               label="Current Financial Situation"
               multiline
               minRows={5}
               fullWidth
+              required
+              error={show(fieldState)}
+              helperText={show(fieldState) ? fieldState.error?.message : " "}
               placeholder="Describe your current financial situation..."
               InputProps={{
                 endAdornment: (
@@ -69,17 +76,21 @@ const Step3: React.FC = () => {
         />
       </Grid>
 
-      <Grid sx={{ xs: 12, md: 6 }}>
+      {/* Row 2 */}
+      <Grid sx={{ flexBasis: "100%", maxWidth: "100%" }}>
         <Controller
           name="situation.employmentCircumstances"
           control={control}
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <TextField
               {...field}
               label="Employment Circumstances"
               multiline
               minRows={5}
               fullWidth
+              required
+              error={show(fieldState)}
+              helperText={show(fieldState) ? fieldState.error?.message : " "}
               placeholder="Describe your employment situation..."
               InputProps={{
                 endAdornment: (
@@ -99,17 +110,21 @@ const Step3: React.FC = () => {
         />
       </Grid>
 
-      <Grid sx={{ xs: 12, md: 6 }}>
+      {/* Row 3 */}
+      <Grid sx={{ flexBasis: "100%", maxWidth: "100%" }}>
         <Controller
           name="situation.reasonForApplying"
           control={control}
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <TextField
               {...field}
               label="Reason for Applying"
               multiline
               minRows={5}
               fullWidth
+              required
+              error={show(fieldState)}
+              helperText={show(fieldState) ? fieldState.error?.message : " "}
               placeholder="Why are you applying for assistance?"
               InputProps={{
                 endAdornment: (

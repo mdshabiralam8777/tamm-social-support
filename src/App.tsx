@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Wizard from "./pages/form/Wizard";
 
 import banner from "./assets/InnerBannerLightBG.jpg";
+import SubmissionSuccess from "./pages/form/SubmissionSuccess";
 
 const App: React.FC = () => {
   return (
@@ -43,6 +44,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/apply" element={<Wizard />} />
+          <Route path="/submitted" element={<SubmissionSuccess />} />
         </Routes>
       </Container>
     </BrowserRouter>

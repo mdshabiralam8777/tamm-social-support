@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
+import { useWatch } from "react-hook-form";
 import {
   Box,
   Card,
@@ -8,10 +9,12 @@ import {
   Stack,
   Button,
   LinearProgress,
+  CircularProgress,
+  Typography,
 } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 import FormStepper from "../../components/FormStepper";
 import { useFormPersist } from "../../hooks/useFormPersist";
 import { submitApplication } from "../../services/api";
@@ -19,73 +22,32 @@ import { useApp } from "../../context/AppContext";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
-
-const schema = z.object({
-  personal: z.object({
-    name: z.string().min(2),
-    nationalId: z.string().min(6),
-    dob: z.string().min(4),
-    gender: z.enum(["male", "female", "other"]),
-    address: z.string().min(5),
-    city: z.string().min(2),
-    state: z.string().min(2),
-    country: z.string().min(2),
-    phone: z.string().min(5),
-    email: z.string().email(),
-  }),
-  family: z.object({
-    maritalStatus: z.enum(["single", "married", "divorced", "widowed"]),
-    dependents: z.coerce.number().int().min(0),
-    employmentStatus: z.enum(["employed", "unemployed", "student", "retired"]),
-    monthlyIncome: z.coerce.number().min(0),
-    housingStatus: z.enum(["rent", "own", "family", "other"]),
-  }),
-  situation: z.object({
-    financialSituation: z.string().min(10),
-    employmentCircumstances: z.string().min(10),
-    reasonForApplying: z.string().min(10),
-  }),
-});
-
-type FormShape = z.infer<typeof schema>;
-
-const defaultValues: FormShape = {
-  personal: {
-    name: "",
-    nationalId: "",
-    dob: "",
-    gender: "male",
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-    phone: "",
-    email: "",
-  },
-  family: {
-    maritalStatus: "single",
-    dependents: 0,
-    employmentStatus: "unemployed",
-    monthlyIncome: 0,
-    housingStatus: "rent",
-  },
-  situation: {
-    financialSituation: "",
-    employmentCircumstances: "",
-    reasonForApplying: "",
-  },
-};
+import {
+  applicationSchema,
+  type ApplicationFormType,
+} from "../../schema/applicationSchema";
+import { STEP_FIELDS } from "../../constants/stepFields";
+import { DEFAULT_VALUES } from "../../constants/defaultValues";
 
 const Wizard: React.FC = () => {
-  const methods = useForm<FormShape>({
-    defaultValues,
-    resolver: zodResolver(schema),
-    mode: "onBlur",
+  const methods = useForm<ApplicationFormType>({
+    defaultValues: DEFAULT_VALUES,
+    resolver: zodResolver(applicationSchema),
+    mode: "onTouched",
+    reValidateMode: "onChange",
   });
   const [active, setActive] = useState(0);
+  const [loading, setLoading] = useState(false); // ✅ added
   const { notify } = useApp();
+  const navigate = useNavigate();
 
-  useFormPersist<FormShape>("tamm:ss:draft", methods.watch, methods.reset);
+  useFormPersist<ApplicationFormType>(
+    "tamm:ss:draft",
+    methods.watch,
+    methods.reset
+  );
+  const watched = useWatch({ control: methods.control }); // watch everything
+  const [canProceed, setCanProceed] = useState(false);
 
   const progress = useMemo(() => ((active + 1) / 3) * 100, [active]);
 
@@ -98,49 +60,105 @@ const Wizard: React.FC = () => {
   const back = () => setActive((s) => Math.max(0, s - 1));
 
   const onSubmit = methods.handleSubmit(async (data) => {
-    const res = await submitApplication(data as any);
-    if (res.status === 200) {
-      localStorage.removeItem("tamm:ss:draft");
-      notify("Application submitted", "success");
-    } else {
-      notify("Submission failed", "error");
-    }
+    console.group("Application Form Submission");
+    console.log("All Inputs:", data);
+    console.groupEnd();
+
+    setLoading(true); // ✅ show loading spinner
+    const res = await submitApplication(data);
+
+    // simulate processing delay (2–3 seconds)
+    setTimeout(() => {
+      setLoading(false);
+
+      if (res.status === 200) {
+        localStorage.removeItem("tamm:ss:draft");
+        notify("Application submitted", "success");
+
+        const ref = `REQ-${new Date().getFullYear()}${String(
+          new Date().getMonth() + 1
+        ).padStart(2, "0")}${String(new Date().getDate()).padStart(
+          2,
+          "0"
+        )}-${Math.floor(10000 + Math.random() * 90000)}`;
+
+        navigate("/submitted", { state: { reference: ref } });
+      } else {
+        notify("Submission failed", "error");
+      }
+    }, 2500); // ⏳ wait ~2.5 sec before navigating
   });
+
+  useEffect(() => {
+    (async () => {
+      const ok = await methods.trigger(STEP_FIELDS[active] as any, {
+        shouldFocus: false,
+      });
+      setCanProceed(ok);
+    })();
+  }, [active, watched, methods]);
 
   return (
     <FormProvider {...methods}>
       <Card>
         <CardHeader title="Apply for Support" subheader="OPEN | مفتوحة" />
         <CardContent>
-          <Stack spacing={3}>
-            <Box>
-              <LinearProgress
-                variant="determinate"
-                value={progress}
-                aria-label="Progress"
-              />
+          {loading ? (
+            // ✅ Show loading spinner while processing
+            <Box
+              sx={{
+                height: "300px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 2,
+              }}
+            >
+              <CircularProgress />
+              <Typography variant="h6" color="text.secondary">
+                Processing your request...
+              </Typography>
             </Box>
-            <FormStepper activeStep={active} />
-            <Divider />
-            {active === 0 && <Step1 />}
-            {active === 1 && <Step2 />}
-            {active === 2 && <Step3 />}
-            <Divider />
-            <Stack direction="row" gap={2} justifyContent="space-between">
-              <Button disabled={active === 0} onClick={back}>
-                Back
-              </Button>
-              {active < 2 ? (
-                <Button variant="contained" onClick={next}>
-                  Next
+          ) : (
+            <Stack spacing={3}>
+              <Box>
+                <LinearProgress
+                  variant="determinate"
+                  value={progress}
+                  aria-label="Progress"
+                />
+              </Box>
+              <FormStepper activeStep={active} />
+              <Divider />
+              {active === 0 && <Step1 />}
+              {active === 1 && <Step2 />}
+              {active === 2 && <Step3 />}
+              <Divider />
+              <Stack direction="row" gap={2} justifyContent="space-between">
+                <Button disabled={active === 0} onClick={back}>
+                  Back
                 </Button>
-              ) : (
-                <Button variant="contained" onClick={onSubmit}>
-                  Submit Application
-                </Button>
-              )}
+                {active < 2 ? (
+                  <Button
+                    variant="contained"
+                    onClick={next}
+                    disabled={!canProceed}
+                  >
+                    Next
+                  </Button>
+                ) : (
+                  <Button
+                    variant="contained"
+                    onClick={onSubmit}
+                    disabled={loading || !canProceed}
+                  >
+                    Submit Application
+                  </Button>
+                )}
+              </Stack>
             </Stack>
-          </Stack>
+          )}
         </CardContent>
       </Card>
     </FormProvider>
