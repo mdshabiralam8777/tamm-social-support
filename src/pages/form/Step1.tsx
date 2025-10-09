@@ -37,7 +37,7 @@ const Step1: React.FC = () => {
     <Grid container spacing={2}>
       {/* 2. Map over the array to render each field */}
       {formFields.map((fieldConfig) => (
-        <Grid sx={{ xs: 12, md: 6 }} key={fieldConfig.name}>
+        <Grid sx={{ xs: 12, md: 6 }} key={fieldConfig.name} minWidth="150px">
           <Controller
             name={fieldConfig.name}
             control={control}

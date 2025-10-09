@@ -56,7 +56,7 @@ const Step3: React.FC = () => {
     <Grid container spacing={2}>
       {/* 2. Map over the config to render each text field */}
       {formFields.map((config) => (
-        <Grid sx={{ xs: 12 }} key={config.name}>
+        <Grid key={config.name} sx={{ flexBasis: "100%", maxWidth: "100%" }}>
           <Controller
             name={config.name}
             control={control}
