@@ -28,6 +28,9 @@ import {
 import { STEP_FIELDS } from "../../constants/stepFields";
 import { DEFAULT_VALUES } from "../../constants/defaultValues";
 
+const steps = [<Step1 />, <Step2 />, <Step3 />];
+const STEP_SECTIONS = ["personal", "family", "situation"] as const;
+
 const Wizard: React.FC = () => {
   const methods = useForm<ApplicationFormType>({
     defaultValues: DEFAULT_VALUES,
@@ -36,7 +39,7 @@ const Wizard: React.FC = () => {
     reValidateMode: "onChange",
   });
   const [active, setActive] = useState(0);
-  const [loading, setLoading] = useState(false); // ✅ added
+  const [loading, setLoading] = useState(false);
   const { notify } = useApp();
   const navigate = useNavigate();
 
@@ -45,18 +48,19 @@ const Wizard: React.FC = () => {
     methods.watch,
     methods.reset
   );
+
   const currentStepFields = STEP_FIELDS[active];
   const watchedValues = methods.watch(currentStepFields as any);
   const [canProceed, setCanProceed] = useState(false);
 
-  const progress = useMemo(() => ((active + 1) / 3) * 100, [active]);
+  const progress = useMemo(() => ((active + 1) / steps.length) * 100, [active]);
 
   const next = async () => {
-    const section =
-      active === 0 ? "personal" : active === 1 ? "family" : "situation";
-    const valid = await methods.trigger(section as any);
-    if (valid) setActive((s) => Math.min(2, s + 1));
+    const section = STEP_SECTIONS[active];
+    const valid = await methods.trigger(section);
+    if (valid) setActive((s) => Math.min(steps.length - 1, s + 1));
   };
+
   const back = () => setActive((s) => Math.max(0, s - 1));
 
   const onSubmit = methods.handleSubmit(async (data) => {
@@ -64,7 +68,7 @@ const Wizard: React.FC = () => {
     console.log("All Inputs:", data);
     console.groupEnd();
 
-    setLoading(true); // ✅ show loading spinner
+    setLoading(true);
     const res = await submitApplication(data);
 
     // simulate processing delay (2–3 seconds)
@@ -86,7 +90,7 @@ const Wizard: React.FC = () => {
       } else {
         notify("Submission failed", "error");
       }
-    }, 2500); // ⏳ wait ~2.5 sec before navigating
+    }, 2500);
   });
 
   useEffect(() => {
@@ -98,7 +102,7 @@ const Wizard: React.FC = () => {
     };
 
     checkValidity();
-  }, [JSON.stringify(watchedValues), active, methods]);
+  }, [JSON.stringify(watchedValues), active, methods, currentStepFields]);
 
   return (
     <FormProvider {...methods}>
@@ -106,7 +110,6 @@ const Wizard: React.FC = () => {
         <CardHeader title="Apply for Support" subheader="OPEN | مفتوحة" />
         <CardContent>
           {loading ? (
-            // ✅ Show loading spinner while processing
             <Box
               sx={{
                 height: "300px",
@@ -133,15 +136,15 @@ const Wizard: React.FC = () => {
               </Box>
               <FormStepper activeStep={active} />
               <Divider />
-              {active === 0 && <Step1 />}
-              {active === 1 && <Step2 />}
-              {active === 2 && <Step3 />}
+
+              {steps[active]}
+
               <Divider />
               <Stack direction="row" gap={2} justifyContent="space-between">
                 <Button disabled={active === 0} onClick={back}>
                   Back
                 </Button>
-                {active < 2 ? (
+                {active < steps.length - 1 ? (
                   <Button
                     variant="contained"
                     onClick={next}
