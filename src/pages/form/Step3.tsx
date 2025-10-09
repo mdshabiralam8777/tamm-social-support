@@ -37,7 +37,6 @@ const Step3: React.FC = () => {
       setOpen(null);
     };
 
-  // helper to control when to show error UI
   const show = (fs: any) => !!fs.error && (fs.isTouched || fs.isDirty);
 
   return (
