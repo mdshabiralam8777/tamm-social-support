@@ -89,6 +89,7 @@ const Step3: React.FC = () => {
       {activeField && (
         <HelpMeWriteDialog
           open={!!activeField}
+          placeholderText={activeField.placeholder}
           onClose={() => setOpenFieldId(null)}
           onAccept={(text: string) => {
             setValue(activeField.name as any, text, { shouldDirty: true });

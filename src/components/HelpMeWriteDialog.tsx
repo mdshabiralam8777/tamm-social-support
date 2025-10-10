@@ -19,10 +19,12 @@ type Props = {
   onClose: () => void;
   onAccept: (text: string) => void;
   seedPrompt: string;
+  placeholderText: string;
 };
 
 const HelpMeWriteDialog: React.FC<Props> = ({
   open,
+  placeholderText,
   onClose,
   onAccept,
   seedPrompt,
@@ -82,8 +84,7 @@ const HelpMeWriteDialog: React.FC<Props> = ({
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder={
-                t("placeholders.financialSituation") ||
-                "Generated suggestion will appear here..."
+                placeholderText || "Generated suggestion will appear here..."
               }
               inputProps={{ "aria-label": "Generated text editor" }}
             />
