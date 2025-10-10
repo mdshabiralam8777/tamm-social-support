@@ -54,7 +54,7 @@ export async function helpMeWrite(
         model: MODEL,
         messages,
         temperature: 0.6,
-        max_tokens: 100,
+        max_tokens: 150,
       },
       {
         signal: controller.signal,
