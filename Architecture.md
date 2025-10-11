@@ -73,7 +73,7 @@ tamm-social-support/
 
 1. **Landing (/**)\*\*
 
-   - Hero banner + services grid (cards).
+   -  Banner + services grid (cards).
    - “Social Support → Open” navigates to `/apply`.
    - Other services show a common **Coming Soon** dialog.
 
@@ -154,10 +154,6 @@ const { t } = useTranslation();
 - **MUI** with `sx` prop for theme-aware styles and responsive layout.
 - **Cards grid**: equal visual height via `height` + text line-clamping (`WebkitLineClamp`), responsive columns using `sx` (`flexBasis`/`maxWidth`) to guarantee 4-up on desktop.
 - **Accessibility**: labeled controls, ARIA where useful, keyboard-friendly components, consistent helper text space (`" "` when no error) to prevent layout jumps.
-- **Z-index discipline**:
-
-  - Hero banner uses `pointerEvents: "none"` and low `zIndex` so it never intercepts clicks.
-  - Content `Container` sits above with `zIndex: 1`.
 
 ---
 
