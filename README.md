@@ -235,10 +235,6 @@ It covers:
 - Built-in validation and error control.
 - No need for controlled input re-renders.
 
-### Why `pointerEvents: "none"` on Hero
-
-- Prevented click interception overlay issue (ensured interactive routes work cleanly).
-
 ### Why i18n with `buildApplicationSchema(t)`
 
 - Ensures all validation messages translate dynamically on language switch.
