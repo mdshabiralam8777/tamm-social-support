@@ -4,7 +4,7 @@ export const getTheme = (dir: "ltr" | "rtl") =>
   createTheme({
     direction: dir,
     palette: {
-      primary: { main: "#0062FF" },
+      primary: { main: "#169F9F" },
       secondary: { main: "#00A3AD" },
     },
     shape: { borderRadius: 12 },

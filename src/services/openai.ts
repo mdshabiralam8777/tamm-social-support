@@ -1,17 +1,10 @@
 import axios from "axios";
+import { tammInformation } from "./tammInformation";
 
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY as string;
 const MODEL = (import.meta.env.VITE_OPENAI_MODEL as string) || "gpt-3.5-turbo";
 
-/**
- * Calls OpenAI Chat Completions with a 15s timeout.
- * Automatically adjusts behavior if user has written partial input.
- */
-export async function helpMeWrite(
-  prompt: string,
-  lang: "en" | "ar" = "en",
-  userInput?: string
-) {
+async function callOpenAI(systemMessages: string[], userMessages: string[]) {
   if (!API_KEY) {
     throw new Error("Missing OpenAI API key. Set VITE_OPENAI_API_KEY in .env");
   }
@@ -19,34 +12,11 @@ export async function helpMeWrite(
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 15_000);
 
-  const languageInstruction =
-    lang === "ar"
-      ? "Reply ONLY in Modern Standard Arabic, as a single plain paragraph. Do NOT wrap the text in quotes or markdown."
-      : "Reply ONLY in English, as a single plain paragraph. Do NOT wrap the text in quotes or markdown.";
-
   try {
-    const messages: any[] = [
-      {
-        role: "system",
-        content:
-          "write concise, empathetic hardship descriptions for government social support forms. Keep it factual, respectful, and clear. it's for UAE citizens and in answer write like e.g: I, me, us like you are that person",
-      },
-      {
-        role: "system",
-        content: languageInstruction,
-      },
-      {
-        role: "user",
-        content: prompt,
-      },
+    const messages = [
+      ...systemMessages.map((msg) => ({ role: "system", content: msg })),
+      ...userMessages.map((msg) => ({ role: "user", content: msg })),
     ];
-
-    if (userInput && userInput.trim().length > 0) {
-      messages.push({
-        role: "user",
-        content: `The applicant has already written this text. Improve it naturally in the same tone and language, preserving meaning and clarity:\n\n"${userInput.trim()}"`,
-      });
-    }
 
     const { data } = await axios.post(
       "https://api.openai.com/v1/chat/completions",
@@ -79,4 +49,41 @@ export async function helpMeWrite(
   } finally {
     clearTimeout(timer);
   }
+}
+
+export async function helpMeWrite(
+  prompt: string,
+  lang: "en" | "ar" = "en",
+  userInput?: string
+) {
+  const languageInstruction =
+    lang === "ar"
+      ? "Reply ONLY in Modern Standard Arabic, as a single plain paragraph. Do NOT wrap the text in quotes or markdown."
+      : "Reply ONLY in English, as a single plain paragraph. Do NOT wrap the text in quotes or markdown.";
+
+  const systemMessages = [
+    "write concise, empathetic hardship descriptions for government social support forms. Keep it factual, respectful, and clear. it's for UAE citizens and in answer write like e.g: I, me, us like you are that person",
+    languageInstruction,
+  ];
+
+  const userMessages = [prompt];
+  if (userInput && userInput.trim().length > 0) {
+    userMessages.push(
+      `The applicant has already written this text. Improve it naturally in the same tone and language, preserving meaning and clarity:\n\n"${userInput.trim()}"`
+    );
+  }
+
+  return callOpenAI(systemMessages, userMessages);
+}
+
+export async function askChatbot(prompt: string, lang: "en" | "ar" = "en") {
+  const languageInstruction =
+    lang === "ar"
+      ? "Reply ONLY in Modern Standard Arabic, as a single plain paragraph. Do NOT wrap the text in quotes or markdown."
+      : "Reply ONLY in English, as a single plain paragraph. Do NOT wrap the text in quotes or markdown.";
+
+  const systemMessages = [tammInformation, languageInstruction];
+  const userMessages = [prompt];
+
+  return callOpenAI(systemMessages, userMessages);
 }
