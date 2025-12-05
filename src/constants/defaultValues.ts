@@ -14,16 +14,25 @@ export const DEFAULT_VALUES: ApplicationFormType = {
     email: "",
   },
   family: {
-    maritalStatus: "single",
-    dependents: 0,
-    employmentStatus: "unemployed",
-    monthlyIncome: 0,
-    housingStatus: "rent",
+    maritalStatus: undefined as any, // Let user select
+    spouseName: "",
+    dependents: undefined as any,
+    householdMembers: undefined as any,
+    employmentStatus: undefined as any, // Let user select
+    monthlyIncome: undefined as any,
+    otherIncome: undefined as any,
+    housingStatus: undefined as any, // Let user select
+    monthlyHousingCost: undefined as any,
+    monthlyExpenses: undefined as any,
+    emergencyContactName: "",
+    emergencyContactPhone: "",
   },
   situation: {
     financialSituation: "",
     employmentCircumstances: "",
     reasonForApplying: "",
+    currentChallenges: "",
+    supportNeeded: "",
   },
   documents: {
     nationalId: [],

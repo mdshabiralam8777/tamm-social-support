@@ -104,10 +104,18 @@ const resources = {
         },
         step2: {
           maritalStatus: "Marital Status",
-          dependents: "Dependents",
+          spouseName: "Spouse Name",
+          dependents: "Number of Dependents",
+          householdMembers: "Total Household Members",
           employmentStatus: "Employment Status",
-          monthlyIncome: "Monthly Income",
+          monthlyIncome: "Monthly Income (AED)",
+          otherIncome: "Other Income (AED)",
           housingStatus: "Housing Status",
+          monthlyRent: "Monthly Rent (AED)",
+          monthlyMortgage: "Monthly Mortgage (AED)",
+          monthlyExpenses: "Total Monthly Expenses (AED)",
+          emergencyContactName: "Emergency Contact Name",
+          emergencyContactPhone: "Emergency Contact Phone",
           maritalOptions: {
             single: "Single",
             married: "Married",
@@ -131,10 +139,15 @@ const resources = {
           financialSituation: "Current Financial Situation",
           employmentCircumstances: "Employment Circumstances",
           reasonForApplying: "Reason for Applying",
+          currentChallenges: "Current Challenges",
+          supportNeeded: "Support Needed",
           placeholders: {
             financial: "Describe your current financial situation...",
             employment: "Describe your employment situation...",
             reason: "Why are you applying for assistance?",
+            challenges:
+              "Describe the main challenges you are currently facing...",
+            support: "What type of support would help you most?",
           },
         },
         step4: {
@@ -262,6 +275,25 @@ const resources = {
         daysAgo_other: "{{count}} days ago",
         weeksAgo: "{{count}} week ago",
         weeksAgo_other: "{{count}} weeks ago",
+      },
+
+      // Form Validation Hints
+      formHints: {
+        emiratesId: "Format: 784-XXXX-XXXXXXX-X (15 digits)",
+        phone: "UAE number: +971-XX-XXX-XXXX or 05XXXXXXXX",
+        // email: "Use your official email address",
+        dob: "Must be 18 years or older",
+        name: "Enter your full name as it appears on official documents",
+        address: "Enter your complete residential address",
+        spouseName: "Enter spouse's full legal name",
+        dependents: "Number of children or adults you support",
+        householdMembers: "Total people living in your household",
+        monthlyIncome: "Your monthly salary or income in AED",
+        otherIncome:
+          "Pension, benefits, or other income sources (leave 0 if none)",
+        monthlyHousingCost: "Your monthly rent or mortgage payment",
+        monthlyExpenses: "Total monthly bills, food, transport, etc.",
+        emergencyContact: "Full name of emergency contact person",
       },
     },
   },
@@ -394,10 +426,14 @@ const resources = {
           financialSituation: "الوضع المالي الحالي",
           employmentCircumstances: "الظروف الوظيفية",
           reasonForApplying: "سبب تقديم الطلب",
+          currentChallenges: "التحديات الحالية",
+          supportNeeded: "الدعم المطلوب",
           placeholders: {
             financial: "صف وضعك المالي الحالي...",
             employment: "صف وضعك الوظيفي...",
             reason: "لماذا تتقدم بطلب للحصول على المساعدة؟",
+            challenges: "صف التحديات الرئيسية التي تواجهها حالياً...",
+            support: "ما نوع الدعم الذي سيساعدك أكثر؟",
           },
         },
         step4: {
@@ -521,6 +557,16 @@ const resources = {
         daysAgo_other: "منذ {{count}} أيام",
         weeksAgo: "منذ {{count}} أسبوع",
         weeksAgo_other: "منذ {{count}} أسابيع",
+      },
+
+      // Form Validation Hints
+      formHints: {
+        emiratesId: "التنسيق: 784-XXXX-XXXXXXX-X (15 رقماً)",
+        phone: "رقم الإمارات: +971-XX-XXX-XXXX أو 05XXXXXXXX",
+        email: "استخدم بريدك الإلكتروني الرسمي",
+        dob: "يجب أن يكون عمرك 18 عاماً أو أكثر",
+        name: "أدخل اسمك الكامل كما يظهر في المستندات الرسمية",
+        address: "أدخل عنوانك السكني الكامل",
       },
     },
   },
