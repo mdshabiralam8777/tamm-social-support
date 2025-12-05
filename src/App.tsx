@@ -9,6 +9,7 @@ import Chatbot from "./components/Chatbot";
 
 import banner from "./assets/InnerBannerLightBG.jpg";
 import SubmissionSuccess from "./pages/form/SubmissionSuccess";
+import Dashboard from "./pages/Dashboard";
 import Footer from "./components/Footer";
 import { useTranslation } from "react-i18next";
 
@@ -61,6 +62,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/apply" element={<Wizard />} />
             <Route path="/submitted" element={<SubmissionSuccess />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </Container>
         <Footer />

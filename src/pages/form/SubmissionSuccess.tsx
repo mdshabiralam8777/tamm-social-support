@@ -70,17 +70,37 @@ const SubmissionSuccess: React.FC = () => {
         >
           {t("submissionPage.save")}
         </Typography>
-        <Button
-          variant="contained"
-          onClick={() => navigate("/")}
-          size="large"
+        <Box
           sx={{
-            width: { xs: "100%", sm: "auto" },
-            minWidth: { sm: 200 },
+            display: "flex",
+            gap: 2,
+            flexDirection: { xs: "column", sm: "row" },
+            width: "100%",
           }}
         >
-          {t("submissionPage.home")}
-        </Button>
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/dashboard")}
+            size="large"
+            sx={{
+              flex: { xs: "1", sm: "0 0 auto" },
+              minWidth: { sm: 200 },
+            }}
+          >
+            {t("dashboard.title")}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/")}
+            size="large"
+            sx={{
+              flex: { xs: "1", sm: "0 0 auto" },
+              minWidth: { sm: 200 },
+            }}
+          >
+            {t("submissionPage.home")}
+          </Button>
+        </Box>
       </Paper>
     </Box>
   );

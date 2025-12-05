@@ -62,6 +62,9 @@ const NavBar: React.FC = () => {
           <Button component={RouterLink} to="/" color="inherit">
             {t("home")}
           </Button>
+          <Button component={RouterLink} to="/dashboard" color="inherit">
+            {t("dashboard.title")}
+          </Button>
           <LanguageSwitch />
         </Box>
 
@@ -82,6 +85,13 @@ const NavBar: React.FC = () => {
           >
             <MenuItem component={RouterLink} to="/" onClick={handleMenuClose}>
               {t("home")}
+            </MenuItem>
+            <MenuItem
+              component={RouterLink}
+              to="/dashboard"
+              onClick={handleMenuClose}
+            >
+              {t("dashboard.title")}
             </MenuItem>
             <MenuItem>
               <LanguageSwitch />

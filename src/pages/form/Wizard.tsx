@@ -88,6 +88,34 @@ const Wizard: React.FC = () => {
           "0"
         )}-${Math.floor(10000 + Math.random() * 90000)}`;
 
+        // Save application to localStorage for dashboard
+        try {
+          const existingApps = JSON.parse(
+            localStorage.getItem("tamm:ss:applications") || "[]"
+          );
+          const newApplication = {
+            id: ref,
+            submittedDate: new Date().toISOString(),
+            status: "submitted",
+            type: t("brand") + " - " + t("applyNow"),
+            lastUpdate: new Date().toISOString(),
+            estimatedCompletion: new Date(
+              Date.now() + 10 * 24 * 60 * 60 * 1000
+            ).toISOString(), // 10 days from now
+            progress: 25,
+            notes:
+              t("dashboard.status.submitted") +
+              ". " +
+              t("dashboard.trackMessage"),
+          };
+          localStorage.setItem(
+            "tamm:ss:applications",
+            JSON.stringify([...existingApps, newApplication])
+          );
+        } catch (error) {
+          console.error("Failed to save application to localStorage:", error);
+        }
+
         navigate("/submitted", { state: { reference: ref } });
       } else {
         notify(t("submissionFailed"), "error");
