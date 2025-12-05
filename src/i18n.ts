@@ -80,6 +80,7 @@ const resources = {
         personal: "Personal Information",
         family: "Family & Financial Info",
         situation: "Situation Descriptions",
+        documents: "Document Upload",
       },
 
       // Form Fields & Labels
@@ -136,6 +137,30 @@ const resources = {
             reason: "Why are you applying for assistance?",
           },
         },
+        step4: {
+          title: "Document Upload",
+          description:
+            "Please upload the required documents to support your application. All documents must be clear and readable.",
+          fileRequirements:
+            "Accepted formats: PDF, JPG, PNG. Maximum file size: 5MB per file.",
+          nationalId: "National ID / Emirates ID",
+          nationalIdDesc:
+            "Copy of your Emirates ID (front and back) or passport for residents",
+          proofOfAddress: "Proof of Address",
+          proofOfAddressDesc:
+            "Recent utility bill, rental agreement, or official document showing your current address",
+          incomeProof: "Income Proof (Optional)",
+          incomeProofDesc:
+            "Salary certificate, bank statements, or other proof of income",
+          additionalDocuments: "Additional Documents",
+          additionalDocumentsDesc:
+            "Any other supporting documents relevant to your application",
+          required: "Required",
+          clickToUpload: "Click to upload or drag and drop",
+          fileTooLarge: "File size exceeds 5MB limit",
+          invalidFileType:
+            "Invalid file type. Please upload PDF, JPG, or PNG files",
+        },
       },
 
       // Dialogs & Notifications
@@ -147,6 +172,65 @@ const resources = {
       draftSaved: "Draft saved",
       submitted: "Application submitted",
       submissionFailed: "Submission failed",
+
+      // Chatbot
+      chatbot: {
+        title: "AI Chat Assistant",
+        placeholder: "Type a message...",
+        typing: "Typing",
+        clearChat: "Clear Chat",
+        welcome: {
+          default: "Hello! How can I help you with TAMM services today?",
+          home: "Welcome to TAMM! How can I assist you with our services?",
+          apply:
+            "I'm here to help with your application. What questions do you have?",
+          submitted:
+            "Congratulations on submitting! I can help answer questions about your application.",
+        },
+        error:
+          "I'm sorry, something went wrong. Please try again later or contact support.",
+        quickReplies: {
+          howToApply: "How do I apply for financial assistance?",
+          documents: "What documents do I need?",
+          processTime: "How long does the process take?",
+          checkStatus: "Can I check my application status?",
+          eligibility: "What are the eligibility requirements?",
+          contactSupport: "How do I contact support?",
+        },
+      },
+
+      // Footer
+      footer: {
+        description:
+          "Your gateway to Abu Dhabi government services. Access all essential services in one unified portal.",
+        servicesTitle: "Services",
+        quickLinksTitle: "Quick Links",
+        legalTitle: "Legal",
+        services: {
+          agriculture: "Agriculture & Livestock",
+          housing: "Housing & Properties",
+          identity: "Identity & Citizenship",
+          police: "Police Services",
+          transport: "Drive & Transport",
+          work: "Work & Education",
+        },
+        quickLinks: {
+          about: "About TAMM",
+          contactUs: "Contact Us",
+          faq: "FAQs",
+          feedback: "Feedback",
+          sitemap: "Sitemap",
+        },
+        legal: {
+          terms: "Terms & Conditions",
+          privacy: "Privacy Policy",
+          accessibility: "Accessibility",
+          disclaimer: "Disclaimer",
+        },
+        copyright: "© {{year}} TAMM. All rights reserved.",
+        abuDhabiGov: "Abu Dhabi Government",
+        uaeGov: "UAE Government",
+      },
     },
   },
   ar: {
@@ -227,6 +311,7 @@ const resources = {
         personal: "المعلومات الشخصية",
         family: "الأسرة والوضع المالي",
         situation: "وصف الحالة",
+        documents: "تحميل المستندات",
       },
 
       // Form Fields & Labels
@@ -283,6 +368,29 @@ const resources = {
             reason: "لماذا تتقدم بطلب للحصول على المساعدة؟",
           },
         },
+        step4: {
+          title: "تحميل المستندات",
+          description:
+            "يرجى تحميل المستندات المطلوبة لدعم طلبك. يجب أن تكون جميع المستندات واضحة وقابلة للقراءة.",
+          fileRequirements:
+            "الصيغ المقبولة: PDF، JPG، PNG. الحد الأقصى لحجم الملف: 5 ميجابايت لكل ملف.",
+          nationalId: "الهوية الوطنية / الهوية الإماراتية",
+          nationalIdDesc:
+            "نسخة من الهوية الإماراتية (الأمامية والخلفية) أو جواز السفر للمقيمين",
+          proofOfAddress: "إثبات العنوان",
+          proofOfAddressDesc:
+            "فاتورة خدمات حديثة أو عقد إيجار أو مستند رسمي يوضح عنوانك الحالي",
+          incomeProof: "إثبات الدخل (اختياري)",
+          incomeProofDesc:
+            "شهادة راتب أو كشوف حسابات بنكية أو أي إثبات آخر للدخل",
+          additionalDocuments: "مستندات إضافية",
+          additionalDocumentsDesc: "أي مستندات داعمة أخرى ذات صلة بطلبك",
+          required: "مطلوب",
+          clickToUpload: "انقر للتحميل أو اسحب وأفلت",
+          fileTooLarge: "حجم الملف يتجاوز حد 5 ميجابايت",
+          invalidFileType:
+            "نوع ملف غير صالح. يرجى تحميل ملفات PDF أو JPG أو PNG",
+        },
       },
 
       // Dialogs & Notifications
@@ -294,6 +402,63 @@ const resources = {
       draftSaved: "تم حفظ المسودة",
       submitted: "تم إرسال الطلب",
       submissionFailed: "فشل الإرسال",
+
+      // Chatbot
+      chatbot: {
+        title: "مساعد الدردشة الذكي",
+        placeholder: "اكتب رسالة...",
+        typing: "يكتب",
+        clearChat: "مسح المحادثة",
+        welcome: {
+          default: "مرحباً! كيف يمكنني مساعدتك في خدمات تمّ اليوم؟",
+          home: "أهلاً بك في تمّ! كيف يمكنني مساعدتك في خدماتنا؟",
+          apply: "أنا هنا لمساعدتك في طلبك. ما هي أسئلتك؟",
+          submitted: "تهانينا على التقديم! يمكنني الإجابة على أسئلتك حول طلبك.",
+        },
+        error:
+          "نأسف، حدث خطأ ما. يرجى المحاولة مرة أخرى لاحقاً أو الاتصال بالدعم.",
+        quickReplies: {
+          howToApply: "كيف أتقدم بطلب للحصول على مساعدة مالية؟",
+          documents: "ما هي المستندات التي أحتاجها؟",
+          processTime: "كم من الوقت تستغرق العملية؟",
+          checkStatus: "هل يمكنني التحقق من حالة طلبي؟",
+          eligibility: "ما هي شروط الأهلية؟",
+          contactSupport: "كيف أتواصل مع الدعم؟",
+        },
+      },
+
+      // Footer
+      footer: {
+        description:
+          "بوابتك إلى خدمات حكومة أبوظبي. الوصول إلى جميع الخدمات الأساسية في بوابة موحدة.",
+        servicesTitle: "الخدمات",
+        quickLinksTitle: "روابط سريعة",
+        legalTitle: "قانوني",
+        services: {
+          agriculture: "الزراعة والثروة الحيوانية",
+          housing: "الإسكان والعقارات",
+          identity: "الهوية والمواطنة",
+          police: "خدمات الشرطة",
+          transport: "القيادة والمواصلات",
+          work: "العمل والتعليم",
+        },
+        quickLinks: {
+          about: "حول تمّ",
+          contactUs: "اتصل بنا",
+          faq: "الأسئلة الشائعة",
+          feedback: "التعليقات",
+          sitemap: "خريطة الموقع",
+        },
+        legal: {
+          terms: "الشروط والأحكام",
+          privacy: "سياسة الخصوصية",
+          accessibility: "إمكانية الوصول",
+          disclaimer: "إخلاء المسؤولية",
+        },
+        copyright: "© {{year}} تمّ. جميع الحقوق محفوظة",
+        abuDhabiGov: "حكومة أبوظبي",
+        uaeGov: "حكومة دولة الإمارات",
+      },
     },
   },
 };

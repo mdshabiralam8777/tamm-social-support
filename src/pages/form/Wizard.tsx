@@ -22,6 +22,7 @@ import { useApp } from "../../context/AppContext";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import Step4 from "./Step4";
 import {
   applicationSchema,
   type ApplicationFormType,
@@ -29,8 +30,8 @@ import {
 import { STEP_FIELDS } from "../../constants/stepFields";
 import { DEFAULT_VALUES } from "../../constants/defaultValues";
 
-const steps = [<Step1 />, <Step2 />, <Step3 />];
-const STEP_SECTIONS = ["personal", "family", "situation"] as const;
+const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />];
+const STEP_SECTIONS = ["personal", "family", "situation", "documents"] as const;
 
 const Wizard: React.FC = () => {
   const { t } = useTranslation();
@@ -109,6 +110,7 @@ const Wizard: React.FC = () => {
     t("steps.personal"),
     t("steps.family"),
     t("steps.situation"),
+    t("steps.documents"),
   ];
 
   return (

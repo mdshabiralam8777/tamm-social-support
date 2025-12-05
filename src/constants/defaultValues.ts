@@ -25,4 +25,10 @@ export const DEFAULT_VALUES: ApplicationFormType = {
     employmentCircumstances: "",
     reasonForApplying: "",
   },
+  documents: {
+    nationalId: [],
+    proofOfAddress: [],
+    incomeProof: [],
+    additionalDocuments: [],
+  },
 };

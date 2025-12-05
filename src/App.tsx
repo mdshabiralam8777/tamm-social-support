@@ -9,6 +9,7 @@ import Chatbot from "./components/Chatbot";
 
 import banner from "./assets/InnerBannerLightBG.jpg";
 import SubmissionSuccess from "./pages/form/SubmissionSuccess";
+import Footer from "./components/Footer";
 import { useTranslation } from "react-i18next";
 
 const App: React.FC = () => {
@@ -21,57 +22,64 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <CssBaseline />
-      <NavBar />
       <Box
-        sx={{
-          backgroundImage: `url(${banner})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          minHeight: { xs: "250px", sm: "350px", md: "450px" },
-          width: "100%",
-          display: "grid",
-          placeItems: "center",
-          position: "relative",
-        }}
+        sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
       >
-        <Typography
-          variant="h3"
-          align="center"
+        <CssBaseline />
+        <NavBar />
+        <Box
           sx={{
-            px: { xs: 2, sm: 3 },
-            color: "#FFFFFF",
-            fontSize: { xs: "32px", sm: "48px", md: "64px" },
-            fontFamily: `CircularStd, Noto Kufi Arabic`,
-            lineHeight: 1.2,
+            backgroundImage: `url(${banner})`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            minHeight: { xs: "250px", sm: "350px", md: "450px" },
+            width: "100%",
+            display: "grid",
+            placeItems: "center",
+            position: "relative",
           }}
         >
-          {t("mainBanner")}
-        </Typography>
+          <Typography
+            variant="h3"
+            align="center"
+            sx={{
+              px: { xs: 2, sm: 3 },
+              color: "#FFFFFF",
+              fontSize: { xs: "32px", sm: "48px", md: "64px" },
+              fontFamily: `CircularStd, Noto Kufi Arabic`,
+              lineHeight: 1.2,
+            }}
+          >
+            {t("mainBanner")}
+          </Typography>
+        </Box>
+        <Container
+          sx={{ py: { xs: 2, sm: 3 }, px: { xs: 2, sm: 3 }, flexGrow: 1 }}
+        >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/apply" element={<Wizard />} />
+            <Route path="/submitted" element={<SubmissionSuccess />} />
+          </Routes>
+        </Container>
+        <Footer />
+        <Fab
+          color="primary"
+          aria-label="chat"
+          sx={{
+            position: "fixed",
+            bottom: { xs: 16, sm: 20 },
+            right: { xs: 16, sm: 20 },
+            width: { xs: 48, sm: 56 },
+            height: { xs: 48, sm: 56 },
+          }}
+          onClick={toggleChatbot}
+        >
+          <ChatIcon fontSize={isChatbotOpen ? "small" : "medium"} />
+        </Fab>
+        {isChatbotOpen && <Chatbot onClose={toggleChatbot} />}
       </Box>
-      <Container sx={{ py: { xs: 2, sm: 3 }, px: { xs: 2, sm: 3 } }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/apply" element={<Wizard />} />
-          <Route path="/submitted" element={<SubmissionSuccess />} />
-        </Routes>
-      </Container>
-      <Fab
-        color="primary"
-        aria-label="chat"
-        sx={{
-          position: "fixed",
-          bottom: { xs: 16, sm: 20 },
-          right: { xs: 16, sm: 20 },
-          width: { xs: 48, sm: 56 },
-          height: { xs: 48, sm: 56 },
-        }}
-        onClick={toggleChatbot}
-      >
-        <ChatIcon fontSize={isChatbotOpen ? "small" : "medium"} />
-      </Fab>
-      {isChatbotOpen && <Chatbot onClose={toggleChatbot} />}
     </BrowserRouter>
   );
 };

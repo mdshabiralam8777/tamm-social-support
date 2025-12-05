@@ -104,6 +104,13 @@ export const applicationSchema = z.object({
       .min(10, "Please provide at least 10 characters.")
       .max(2000, "Please keep it under 2000 characters."),
   }),
+
+  documents: z.object({
+    nationalId: z.array(z.any()).optional(),
+    proofOfAddress: z.array(z.any()).optional(),
+    incomeProof: z.array(z.any()).optional(),
+    additionalDocuments: z.array(z.any()).optional(),
+  }),
 });
 
 export type ApplicationFormType = z.infer<typeof applicationSchema>;
