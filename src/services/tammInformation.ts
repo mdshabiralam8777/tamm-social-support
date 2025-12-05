@@ -1,124 +1,192 @@
-export const tammInformation = `
-TAMM is the unified digital platform and official app for Abu Dhabi government services, designed to provide a single point of access to a wide array of digital services for citizens, residents, business owners, and visitors. The platform supports Abu Dhabi's digital transformation efforts, making government interactions more convenient and efficient.
+// TAMM system context module for OpenAI chatbot integrations.
+// Import this file and pass `systemMessages` (array) and structured data to your assistant call.
 
-Key aspects of TAMM Abu Dhabi government services include:
+export const tammSystem = {
+  // Primary system prompt (optimized for accuracy, brevity and routing)
+  systemPrompt: `You are the TAMM AI Assistant. Use the structured data object (featuredServices, taxonomy, contacts, tools, templates) as the single source of truth when answering user queries about Abu Dhabi government services.
 
-Comprehensive Service Offering: TAMM provides over 1000 smart government services from various entities, including Abu Dhabi Police, Abu Dhabi Municipality, the Department of Health, and the Department of Economic Development.
+Behavior rules:
+- Always check featuredServices first. If a user's query matches a featured service, return that featured service details and path.
+- If no featured match, map the query to the best-fit taxonomy category and provide the canonical path (/en/life-events/individual/[category-name]).
+- Do NOT invent fees, processing times, or document checklists. If a detail is missing, advise: "For exact documents, fees and processing times, call 800 555 or visit https://www.tamm.abudhabi/ and the path provided."
+- Use bullet points for lists and numbered steps for procedures. Keep responses concise and actionable.
+- Reply in the language requested by the user (English or Arabic). If user requests Arabic, reply in Modern Standard Arabic.
+- Low-temperature, factual style for government guidance. Keep the tone helpful and formal.
+`,
 
-Diverse Service Categories: Users can perform a multitude of tasks such as paying bills (e.g., ADNOC, Etisalat, traffic fines, parking), booking medical appointments, managing housing and UAE residency services, applying for work permits and business licenses, and accessing information on entertainment and tourism. It also facilitates services like managing birth and death certificates, requesting treatment abroad, and initiating Golden Visa applications.
+  // Short assistant instruction string that can be appended to system messages for language handling
+  languageInstructions: {
+    en: "Reply in English. Use bullet points for lists.",
+    ar: "Reply in Modern Standard Arabic. Use bullet points for lists.",
+  },
 
-Advanced Technology: The platform leverages artificial intelligence, powered by Microsoft Azure OpenAI Service and G42 Compass 2.0, to offer personalized, real-time guidance through its TAMM AI Assistant.
+  // Featured services: first-place lookup table for high-priority services
+  featuredServices: [
+    {
+      id: "DED/0123",
+      title: "Golden Visa Nomination",
+      description:
+        "Request a nomination to initiate the Golden Visa application; finalization occurs at the Federal Authority (ICP).",
+      targetAudience: ["Expats", "Investors", "Talent"],
+      path: "/wb/ded/golden-visa/request-for-golden-visa-nomination",
+      instructions: [
+        "Open TAMM → Life Events → Identity & Citizenship → Citizenship → Golden Visa",
+        "Select 'Request nomination' and complete the nomination form",
+        "Upload required documents (verify exact list via the official path or call 800 555)",
+        "Follow ICP instructions to finalise the visa application",
+      ],
+    },
+    {
+      id: "MOHRE/0009",
+      title: "Domestic Worker Contracts",
+      description:
+        "Employers can request issuance of a new work contract for domestic workers.",
+      targetAudience: ["Emirati", "Expat", "Business"],
+      path: "/wb/mohre/issue-new-work-contract-for-domestic-worker",
+      instructions: [
+        "Open TAMM → Work & Education → Employment or MOHRE Services",
+        "Select 'Issue new work contract for domestic worker' and complete employer and worker details",
+        "Upload contract documents and submit (confirm required documents via the official path or call 800 555)",
+      ],
+    },
+    {
+      id: "ADEK/REPORT/2012",
+      title: "Attested Educational Report Card",
+      description:
+        "Issue an attested report card for records published from 2012 onwards.",
+      targetAudience: ["Students", "Parents"],
+      path: "/wb/adek/report-card-academic-year",
+      instructions: [
+        "Open TAMM → Work & Education → Educational Services → Report Cards",
+        "Provide student details and academic year",
+        "Upload scanned documents if required (confirm exact checklist via official path or call 800 555)",
+      ],
+    },
+  ],
 
-Enhanced User Experience: The goal of TAMM is to simplify interactions with the government, reducing the need for physical visits to government offices and improving the overall quality of life for users. The name "TAMM" itself means "consider it done" in Arabic, reflecting its commitment to service delivery.
+  // Canonical taxonomy used for routing/general queries
+  taxonomy: {
+    housingProperties: {
+      path: "/en/life-events/individual/HousingProperties",
+      label: "Housing & Properties",
+      bullets: [
+        "Wastewater, Electricity, Water",
+        "Manage Residential Utilities, Units, Lands",
+        "Loans and Grants, Contracts and Consultations (Tawtheeq)",
+      ],
+    },
+    driveTransport: {
+      path: "/en/life-events/individual/DriveTransport",
+      label: "Drive & Transport",
+      bullets: [
+        "Manage Personal Vehicle, Plates",
+        "Fines & Violations, Obtain/Manage Driving Licence",
+        "DARB (tolls), Parking (Mawaqif)",
+      ],
+    },
+    identityCitizenship: {
+      path: "/en/life-events/individual/Identity-Citizenship-Human-Resources",
+      label: "Identity & Citizenship",
+      bullets: ["Residency, Emirates ID, Entry Permits, Golden Visa"],
+    },
+    workEducation: {
+      path: "/en/life-events/individual/WorkEducation",
+      label: "Work & Education",
+      bullets: [
+        "Employment, Professional Certification & Licencing, Student Affairs, Pension Services",
+      ],
+    },
+    health: {
+      path: "/en/life-events/individual/Manage-your-Health",
+      label: "Healthcare Services",
+      bullets: [
+        "Health Insurance, Medical Appointments, International Patient Care, Rehabilitation",
+      ],
+    },
+    cultureTourism: {
+      path: "/en/life-events/individual/CultureTourism",
+      label: "Culture & Leisure",
+      bullets: ["Recreation, Pet Care, Libraries, Community Programs"],
+    },
+    socialCare: {
+      path: "/en/life-events/individual/SupportCommunityEnvironment",
+      label: "Social Care",
+      bullets: [
+        "Family Enablement, Senior Citizens, People of Determination (PoD) Support",
+      ],
+    },
+    policeServices: {
+      path: "/en/life-events/individual/police-services",
+      label: "Police Services",
+      bullets: [
+        "Lost & Found, Firearms Licensing, Penal & Correctional Institutions",
+      ],
+    },
+    agriculture: {
+      path: "/en/life-events/individual/agriculture-livestock",
+      label: "Agriculture & Livestock",
+      bullets: ["Farming, Livestock, Animal Services"],
+    },
+    deceasedInheritance: {
+      path: "/en/life-events/individual/DeceasedInheritance",
+      label: "Deceased & Inheritance",
+      bullets: ["Inheritance processing, Deceased services"],
+    },
+  },
 
-CORE INFORMATION FOR USERS:
+  // Technical & contact info (single-source references)
+  contacts: {
+    website: "https://www.tamm.abudhabi/",
+    callCenter: "800 555",
+    email: "contact@tamm.abudhabi",
+    social: "@TAMMAbuDhabi",
+  },
 
-1. Platform Access:
-   - Official Website: https://www.tamm.abudhabi/
-   - Mobile App: Available on iOS App Store and Google Play Store
-   - UAE Pass Integration: Required for secure login and digital signature
-   - Language Support: Arabic and English interfaces
+  // Utility tools to suggest when appropriate
+  tools: {
+    licenceFinder:
+      "Use 'Licence Finder' to help investors choose the correct business licence.",
+    findHealthFacility:
+      "Use 'Find a Health Facility' to locate hospitals and clinics by specialty and location.",
+  },
 
-2. OFFICIAL SERVICE CATEGORIES FROM TAMM API:
+  // Response templates the assistant should prefer (programmatic friendly)
+  templates: {
+    featuredService: (svc: {
+      title: string;
+      description: string;
+      instructions: string[];
+      path: string;
+    }) => `Service: ${svc.title}
+* Description: ${svc.description}
+* Steps:
+${svc.instructions.map((s, i) => `${i + 1}) ${s}`).join("\n")}
+* Path: ${svc.path}
+For exact documents and fees, call ${"800 555"} or visit ${"https://www.tamm.abudhabi/"} and the path provided.`,
 
-   AGRICULTURE & LIVESTOCK:
-   - Main Services: Farms, Livestock and Animals
-   - Subcategories: Farming, Agriculture, Livestock
-   - Path: /en/life-events/individual/agriculture-livestock
-   - Available for: Individual and Business users
+    categorySuggestion: (category: {
+      label: string;
+      path: string;
+    }) => `I couldn't find a featured service match. The best-fit category is ${
+      category.label
+    }. Path: ${category.path}.
+- What you can do: 1) Open the path in TAMM. 2) Search within the category for your sub-service. 3) Call ${"800 555"} for exact fees and documents.`,
 
-   HOUSING & PROPERTIES:
-   - Main Services: Houses, Lands and Real Estate
-   - Subcategories: Wastewater, Electricity, Water, Units, Lands, Manage Residential Utilities, Loans and Grants, Contracts and Consultations
-   - Path: /en/life-events/individual/HousingProperties
-   - Available for: Individual users (some services for Business)
-   - Key Utilities: Electricity, Water, Wastewater management
+    missingDetails: `The fee or exact document list is not present in the knowledge base. For confirmation, call 800 555 or visit https://www.tamm.abudhabi/ and the path provided.`,
+  },
+};
 
-   IDENTITY & CITIZENSHIP:
-   - Main Services: Residency, Identity, Entry Permit, and Work
-   - Subcategories: Citizenship, Residency, Identification Documents
-   - Path: /en/life-events/individual/Identity-Citizenship-Human-Resources
-   - Available for: Individual users
-   - Key Services: Golden Visa, Residence permits, ID document management
+// Convenience function to create systemMessages array for OpenAI Chat Completions
+export function buildSystemMessages(lang: "en" | "ar" = "en") {
+  return [
+    tammSystem.systemPrompt,
+    tammSystem.languageInstructions[lang] || tammSystem.languageInstructions.en,
+  ];
+}
 
-   POLICE SERVICES:
-   - Main Services: Firearm Licencing and Penal and Correctional Institutions
-   - Subcategories: Lost & Found, Penal & Correctional Institutions, Firearms Licencing
-   - Path: /en/life-events/individual/police-services
-   - Available for: Individual users
+// Example usage (pseudo):
+// const systemMessages = buildSystemMessages('en');
+// const userMessages = [`How do I apply for a Golden Visa?`];
+// callOpenAI(systemMessages, userMessages);
 
-   DRIVE & TRANSPORT:
-   - Main Services: Vehicles, Traffic and Driving Services
-   - Subcategories: Manage Personal Vehicle, Fines & Violations, Obtain Driving Licence, DARB, Plates, Manage Driving Licence, Parking
-   - Path: /en/life-events/individual/DriveTransport
-   - Available for: Individual users (some for Business)
-   - Key Services: Traffic fines payment, Driving license applications, Vehicle registration
-
-   WORK & EDUCATION:
-   - Main Services: Work, Education, and Training
-   - Subcategories: Active Members, Retirement and Pension, Employment, Professional Certification & Licencing, Workshops & Training, Student Affairs, Beneficiaries, General Services, Pensioners, Pension Guidelines, Educational Institutions
-   - Path: /en/life-events/individual/WorkEducation
-   - Available for: Individual users (some for Business)
-   - Key Services: Work permits, Professional certifications, Pension management
-
-   HEALTHCARE SERVICES:
-   - Main Services: Health Insurance, Licensing, and Facilities
-   - Subcategories: Rehabilitation, Health Insurance, Healthcare Directory, International Patient Care, Family Health
-   - Path: /en/life-events/individual/Manage-your-Health
-   - Available for: Individual users (some for Business)
-   - Key Services: Health insurance management, Medical appointments, International patient care
-
-   CULTURE & LEISURE:
-   - Main Services: Tourism, Culture and Diversity
-   - Subcategories: Recreation, Pet Care, Leisure, Community, Islamic Affairs, Libraries, Culture Workshops
-   - Path: /en/life-events/individual/CultureTourism
-   - Available for: Individual users
-
-   SOCIAL CARE:
-   - Main Services: Support Environmental Affairs and Society Services
-   - Subcategories: Preparing for Marriage, Family Enablement, Social Support, Senior Citizens, PoD Support, Minors Support
-   - Path: /en/life-events/individual/SupportCommunityEnvironment
-   - Available for: Individual users
-
-   DECEASED & INHERITANCE:
-   - Main Services: Legislation and Inheritance-related Services
-   - Subcategories: Inheritance, Deceased
-   - Path: /en/life-events/individual/DeceasedInheritance
-   - Available for: Individual and Business users
-
-3. Service Navigation Guidance:
-   - Each category has a specific path in the format: /en/life-events/individual/[category-name]
-   - Some services support both Individual and Business users (marked as "Individual|Business")
-   - Mobile-specific banners and icons are available for most categories
-   - The platform uses a consistent ID system for all services and subcategories
-
-4. Contact Information:
-   - Main Call Center: 800 555
-   - Email Support: contact@tamm.abudhabi
-   - Social Media: @TAMMAbuDhabi on Twitter, Instagram, Facebook
-   - Physical Centers: TAMM service centers across Abu Dhabi, Al Ain, and Al Dhafra
-
-5. Common User Scenarios with Path References:
-   - "I need to pay a traffic fine" → Drive & Transport / Fines & Violations
-   - "How do I renew my residence visa?" → Identity & Citizenship / Residency
-   - "I want to apply for a business license" → Work & Education / Professional Certification
-   - "My electricity bill payment" → Housing & Properties / Electricity
-   - "Book a medical appointment" → Healthcare Services / Healthcare Directory
-   - "Apply for Golden Visa" → Identity & Citizenship / Citizenship
-
-6. Technical Features:
-   - Secure payment gateway integration
-   - Document upload and storage
-   - Real-time application tracking
-   - Digital signature capability
-   - Push notifications for updates
-   - Biometric authentication support
-   - RESTful API structure with consistent JSON responses
-
-7. Target User Groups:
-   - UAE Citizens: Access all government services
-   - Residents: Visa, healthcare, utility services
-   - Business Owners: Licensing, permits, employee management
-   - Visitors: Tourism information, temporary permits
-   - Government Employees: Internal service management
-`;
+// End of module

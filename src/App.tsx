@@ -1,12 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
-import {
-  CssBaseline,
-  Container,
-  Box,
-  Typography,
-  Fab,
-} from "@mui/material";
+import { CssBaseline, Container, Box, Typography, Fab } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
@@ -35,7 +29,7 @@ const App: React.FC = () => {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "cover",
-          minHeight: "450px",
+          minHeight: { xs: "250px", sm: "350px", md: "450px" },
           width: "100%",
           display: "grid",
           placeItems: "center",
@@ -46,16 +40,17 @@ const App: React.FC = () => {
           variant="h3"
           align="center"
           sx={{
-            px: 2,
+            px: { xs: 2, sm: 3 },
             color: "#FFFFFF",
-            fontSize: "64px",
+            fontSize: { xs: "32px", sm: "48px", md: "64px" },
             fontFamily: `CircularStd, Noto Kufi Arabic`,
+            lineHeight: 1.2,
           }}
         >
           {t("mainBanner")}
         </Typography>
       </Box>
-      <Container sx={{ py: 3 }}>
+      <Container sx={{ py: { xs: 2, sm: 3 }, px: { xs: 2, sm: 3 } }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/apply" element={<Wizard />} />
@@ -65,10 +60,16 @@ const App: React.FC = () => {
       <Fab
         color="primary"
         aria-label="chat"
-        sx={{ position: "fixed", bottom: 20, right: 20 }}
+        sx={{
+          position: "fixed",
+          bottom: { xs: 16, sm: 20 },
+          right: { xs: 16, sm: 20 },
+          width: { xs: 48, sm: 56 },
+          height: { xs: 48, sm: 56 },
+        }}
         onClick={toggleChatbot}
       >
-        <ChatIcon />
+        <ChatIcon fontSize={isChatbotOpen ? "small" : "medium"} />
       </Fab>
       {isChatbotOpen && <Chatbot onClose={toggleChatbot} />}
     </BrowserRouter>

@@ -1,11 +1,10 @@
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import {
   Box,
   Container,
   Card,
   CardContent,
-  CardActions,
   Button,
   Typography,
   Grid,
@@ -68,17 +67,19 @@ const Home: React.FC = () => {
             }}
           >
             <Card
+              onClick={() => handleOpen(c)}
               sx={{
                 bgcolor: "background.paper",
-                borderRadius: 3,
+                borderRadius: { xs: 2, sm: 3 },
                 border: "1px solid",
                 borderColor: "divider",
                 boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                minHeight: 200,
+                minHeight: { xs: "auto", sm: 200 },
                 width: "100%",
+                cursor: "pointer",
                 transition: (theme) =>
                   theme.transitions.create(
                     ["box-shadow", "transform", "border-color"],
@@ -86,64 +87,77 @@ const Home: React.FC = () => {
                   ),
                 "&:hover": {
                   boxShadow: (theme) => theme.shadows[6],
-                  transform: "translateY(-6px) scale(1.01)",
+                  transform: {
+                    xs: "scale(1.01)",
+                    sm: "translateY(-6px) scale(1.01)",
+                  },
                   borderColor: "primary.light",
                 },
               }}
             >
-              <CardContent sx={{ flexGrow: 1 }}>
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: { xs: "row", sm: "column" },
+                  alignItems: { xs: "flex-start", sm: "center" },
+                  textAlign: { xs: "left", sm: "center" },
+                  p: { xs: 2, sm: 3 },
+                  gap: { xs: 2, sm: 0 },
+                }}
+              >
+                {/* Icon */}
                 <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 2, mb: 1 }}
+                  component="img"
+                  src={c.DefaultIcon}
+                  alt={t(c.titleKey)}
+                  sx={{
+                    width: { xs: 48, sm: 56 },
+                    height: { xs: 48, sm: 56 },
+                    mb: { xs: 0, sm: 2 },
+                    flexShrink: 0,
+                  }}
+                />
+
+                {/* Text content wrapper for mobile */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flex: 1,
+                  }}
                 >
-                  <Box
-                    component="img"
-                    src={c.DefaultIcon}
-                    alt="image"
-                    sx={{ width: 36, height: 36 }}
-                  />
+                  {/* Title */}
                   <Typography
                     variant="h6"
-                    sx={{ lineHeight: 1.25, fontWeight: 600 }}
+                    sx={{
+                      lineHeight: 1.3,
+                      fontWeight: 600,
+                      mb: { xs: 0.5, sm: 1.5 },
+                      fontSize: { xs: "1rem", sm: "1.25rem" },
+                    }}
                   >
                     {t(c.titleKey)}
                   </Typography>
-                </Box>
-                <Typography
-                  color="text.secondary"
-                  sx={{
-                    fontSize: 14,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 4,
-                    whiteSpace: "normal",
-                  }}
-                >
-                  {t(c.descriptionKey)}
-                </Typography>
-              </CardContent>
 
-              <CardActions sx={{ p: 2, pt: 0 }}>
-                {c.ID === "social-support" ? (
-                  <Button
-                    component={RouterLink}
-                    to="/apply"
-                    variant="contained"
-                    fullWidth
+                  {/* Description */}
+                  <Typography
+                    color="text.secondary"
+                    sx={{
+                      fontSize: { xs: 13, sm: 14 },
+                      lineHeight: 1.6,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: { xs: 2, sm: 3 },
+                      whiteSpace: "normal",
+                    }}
                   >
-                    {t("open")}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outlined"
-                    fullWidth
-                    onClick={() => handleOpen(c)}
-                  >
-                    {t("open")}
-                  </Button>
-                )}
-              </CardActions>
+                    {t(c.descriptionKey)}
+                  </Typography>
+                </Box>
+              </CardContent>
             </Card>
           </Grid>
         ))}

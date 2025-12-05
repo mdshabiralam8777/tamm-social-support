@@ -48,18 +48,21 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       elevation={5}
       sx={{
         position: "fixed",
-        bottom: 100,
-        right: 20,
-        width: 350,
-        height: 500,
+        bottom: { xs: 0, sm: 100 },
+        right: { xs: 0, sm: 20 },
+        left: { xs: 0, sm: "auto" },
+        width: { xs: "100%", sm: 380, md: 400 },
+        height: { xs: "100vh", sm: 550 },
+        maxHeight: { xs: "100vh", sm: "calc(100vh - 120px)" },
         display: "flex",
         flexDirection: "column",
         zIndex: 1000,
+        borderRadius: { xs: 0, sm: 2 },
       }}
     >
       <Box
         sx={{
-          p: 2,
+          p: { xs: 1.5, sm: 2 },
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -67,27 +70,43 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           color: "primary.contrastText",
         }}
       >
-        <Typography variant="h6">AI Chat Assistant</Typography>
-        <IconButton onClick={onClose} color="inherit">
+        <Typography
+          variant="h6"
+          sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+        >
+          AI Chat Assistant
+        </Typography>
+        <IconButton onClick={onClose} color="inherit" size="small">
           <CloseIcon />
         </IconButton>
       </Box>
-      <Box sx={{ flexGrow: 1, p: 2, overflowY: "auto" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: { xs: 1.5, sm: 2 },
+          overflowY: "auto",
+          overflowX: "hidden",
+        }}
+      >
         {messages.map((msg, index) => (
           <Box
             key={index}
             sx={{
               textAlign: msg.sender === "user" ? "right" : "left",
-              mb: 1,
+              mb: { xs: 0.75, sm: 1 },
             }}
           >
             <Typography
               variant="body1"
               sx={{
                 display: "inline-block",
-                p: 1,
+                p: { xs: 0.75, sm: 1 },
                 borderRadius: 2,
                 bgcolor: msg.sender === "user" ? "primary.light" : "grey.200",
+                maxWidth: "85%",
+                wordBreak: "break-word",
+                overflowWrap: "break-word",
+                fontSize: { xs: "0.875rem", sm: "1rem" },
               }}
             >
               {msg.text}
@@ -95,14 +114,15 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           </Box>
         ))}
         {loading && (
-          <Box sx={{ textAlign: "left", mb: 1 }}>
+          <Box sx={{ textAlign: "left", mb: { xs: 0.75, sm: 1 } }}>
             <Typography
               variant="body1"
               sx={{
                 display: "inline-block",
-                p: 1,
+                p: { xs: 0.75, sm: 1 },
                 borderRadius: 2,
                 bgcolor: "grey.200",
+                fontSize: { xs: "0.875rem", sm: "1rem" },
               }}
             >
               ...
@@ -110,7 +130,14 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           </Box>
         )}
       </Box>
-      <Box sx={{ p: 1, display: "flex", alignItems: "center" }}>
+      <Box
+        sx={{
+          p: { xs: 1, sm: 1.5 },
+          display: "flex",
+          alignItems: "center",
+          gap: 0.5,
+        }}
+      >
         <TextField
           fullWidth
           variant="outlined"
@@ -120,9 +147,20 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSend()}
           disabled={loading}
+          sx={{
+            "& .MuiInputBase-input": {
+              fontSize: { xs: "0.875rem", sm: "1rem" },
+            },
+          }}
         />
-        <IconButton color="primary" onClick={handleSend} disabled={loading}>
-          <SendIcon />
+        <IconButton
+          color="primary"
+          onClick={handleSend}
+          disabled={loading}
+          size="small"
+          sx={{ flexShrink: 0 }}
+        >
+          <SendIcon fontSize="small" />
         </IconButton>
       </Box>
     </Paper>
