@@ -161,7 +161,7 @@ const resources = {
             "Copy of your Emirates ID (front and back) or passport for residents",
           proofOfAddress: "Proof of Address",
           proofOfAddressDesc:
-            "Recent utility bill, rental agreement, or official document showing your current address",
+            "Recent utility bill, rental agreement etc, showing your current address",
           incomeProof: "Income Proof (Optional)",
           incomeProofDesc:
             "Salary certificate, bank statements, or other proof of income",

@@ -38,27 +38,27 @@ const Footer: React.FC = () => {
   const socialLinks = [
     {
       icon: <FacebookIcon />,
-      href: "https://www.facebook.com/TammAbuDhabi",
+      href: "https://www.facebook.com/TAMM.AbuDhabi/",
       label: "Facebook",
     },
     {
       icon: <TwitterIcon />,
-      href: "https://twitter.com/TammAbuDhabi",
+      href: "https://twitter.com/AbuDhabi_TAMM",
       label: "Twitter",
     },
     {
       icon: <InstagramIcon />,
-      href: "https://www.instagram.com/tammabudhabi",
+      href: "https://www.instagram.com/abudhabi_tamm/?hl=en",
       label: "Instagram",
     },
-    {
-      icon: <YouTubeIcon />,
-      href: "https://www.youtube.com/c/TammAbuDhabi",
-      label: "YouTube",
-    },
+    // {
+    //   icon: <YouTubeIcon />,
+    //   href: "https://www.youtube.com/c/TammAbuDhabi",
+    //   label: "YouTube",
+    // },
     {
       icon: <LinkedInIcon />,
-      href: "https://www.linkedin.com/company/tamm-abudhabi",
+      href: "https://www.linkedin.com/company/abu-dhabi-tamm/",
       label: "LinkedIn",
     },
   ];

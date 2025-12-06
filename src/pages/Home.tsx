@@ -167,26 +167,120 @@ const Home: React.FC = () => {
         open={comingOpen}
         onClose={() => setComingOpen(false)}
         aria-labelledby="coming-soon-title"
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            p: { xs: 1, sm: 2 },
+          },
+        }}
       >
-        <DialogTitle id="coming-soon-title">{t("comingSoon")}</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1" sx={{ mb: 1.5 }}>
+        <DialogTitle
+          id="coming-soon-title"
+          sx={{
+            textAlign: "center",
+            pb: 1,
+            pt: { xs: 2, sm: 3 },
+          }}
+        >
+          {/* Icon for the selected service */}
+          {selected && (
+            <Box
+              component="img"
+              src={selected.DefaultIcon}
+              alt={t(selected.titleKey)}
+              sx={{
+                width: { xs: 64, sm: 80 },
+                height: { xs: 64, sm: 80 },
+                mb: 2,
+                mx: "auto",
+                display: "block",
+                opacity: 0.9,
+              }}
+            />
+          )}
+          <Typography
+            variant="h5"
+            component="span"
+            sx={{
+              fontWeight: 600,
+              color: "primary.main",
+              display: "block",
+            }}
+          >
+            {t("comingSoon")}
+          </Typography>
+        </DialogTitle>
+
+        <DialogContent sx={{ textAlign: "center", px: { xs: 2, sm: 4 } }}>
+          <Typography
+            variant="h6"
+            sx={{
+              mb: 2,
+              fontWeight: 500,
+              color: "text.primary",
+            }}
+          >
+            {t(selected?.titleKey || "")}
+          </Typography>
+
+          <Typography
+            variant="body1"
+            sx={{
+              mb: 2,
+              color: "text.secondary",
+              lineHeight: 1.7,
+            }}
+          >
             {t("comingSoonMsg", { serviceName: t(selected?.titleKey || "") })}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+
+          <Typography
+            variant="body2"
+            sx={{
+              color: "text.secondary",
+              bgcolor: "action.hover",
+              borderRadius: 2,
+              p: 2,
+              mt: 1,
+            }}
+          >
             {t("comingSoonSubMsg", {
               defaultValue:
                 "In the meantime, you can explore other services or apply for Social Support.",
             })}
           </Typography>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setComingOpen(false)}>{t("close")}</Button>
+
+        <DialogActions
+          sx={{
+            justifyContent: "center",
+            gap: 2,
+            pb: { xs: 2, sm: 3 },
+            px: { xs: 2, sm: 4 },
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
+          <Button
+            onClick={() => setComingOpen(false)}
+            variant="outlined"
+            sx={{
+              minWidth: { xs: "100%", sm: 140 },
+              order: { xs: 2, sm: 1 },
+            }}
+          >
+            {t("close")}
+          </Button>
           <Button
             variant="contained"
             onClick={() => {
               setComingOpen(false);
               navigate("/apply");
+            }}
+            sx={{
+              minWidth: { xs: "100%", sm: 180 },
+              order: { xs: 1, sm: 2 },
             }}
           >
             {t("applyNow")}

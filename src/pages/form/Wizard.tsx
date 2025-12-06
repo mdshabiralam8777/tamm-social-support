@@ -128,7 +128,21 @@ const Wizard: React.FC = () => {
       const ok = await methods.trigger(currentStepFields as any, {
         shouldFocus: false,
       });
-      setCanProceed(ok);
+
+      // On Step 4 (documents), also check if mandatory documents are uploaded
+      if (active === 3) {
+        const documents = methods.getValues("documents");
+        const hasNationalId = !!(
+          documents?.nationalId && documents.nationalId.length > 0
+        );
+        const hasProofOfAddress = !!(
+          documents?.proofOfAddress && documents.proofOfAddress.length > 0
+        );
+        const mandatoryDocsUploaded = hasNationalId && hasProofOfAddress;
+        setCanProceed(ok && mandatoryDocsUploaded);
+      } else {
+        setCanProceed(ok);
+      }
     };
 
     checkValidity();
