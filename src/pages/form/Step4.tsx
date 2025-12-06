@@ -142,7 +142,7 @@ const Step4: React.FC = () => {
               name={`documents.${category.id}`}
               control={control}
               defaultValue={[]}
-              render={({ field, fieldState }) => {
+              render={({ field: _field, fieldState }) => {
                 const uploadedFiles = watch(`documents.${category.id}`) || [];
 
                 return (
