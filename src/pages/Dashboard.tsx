@@ -343,6 +343,7 @@ const Dashboard: React.FC = () => {
                     variant="outlined"
                     fullWidth
                     size="small"
+                    onClick={() => navigate(`/application/${application.id}`)}
                     sx={{ fontSize: { xs: "0.813rem", sm: "0.875rem" } }}
                   >
                     {t("dashboard.viewDetails")}

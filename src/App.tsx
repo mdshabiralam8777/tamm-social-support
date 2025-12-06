@@ -10,6 +10,7 @@ import Chatbot from "./components/Chatbot";
 import banner from "./assets/InnerBannerLightBG.jpg";
 import SubmissionSuccess from "./pages/form/SubmissionSuccess";
 import Dashboard from "./pages/Dashboard";
+import ApplicationTracker from "./pages/ApplicationTracker";
 import Footer from "./components/Footer";
 import { useTranslation } from "react-i18next";
 
@@ -63,6 +64,7 @@ const App: React.FC = () => {
             <Route path="/apply" element={<Wizard />} />
             <Route path="/submitted" element={<SubmissionSuccess />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/application/:id" element={<ApplicationTracker />} />
           </Routes>
         </Container>
         <Footer />
