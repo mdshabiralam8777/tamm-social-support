@@ -1,11 +1,10 @@
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import {
   Box,
   Container,
   Card,
   CardContent,
-  CardActions,
   Button,
   Typography,
   Grid,
@@ -68,17 +67,19 @@ const Home: React.FC = () => {
             }}
           >
             <Card
+              onClick={() => handleOpen(c)}
               sx={{
                 bgcolor: "background.paper",
-                borderRadius: 3,
+                borderRadius: { xs: 2, sm: 3 },
                 border: "1px solid",
                 borderColor: "divider",
                 boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                minHeight: 200,
+                minHeight: { xs: "auto", sm: 200 },
                 width: "100%",
+                cursor: "pointer",
                 transition: (theme) =>
                   theme.transitions.create(
                     ["box-shadow", "transform", "border-color"],
@@ -86,64 +87,77 @@ const Home: React.FC = () => {
                   ),
                 "&:hover": {
                   boxShadow: (theme) => theme.shadows[6],
-                  transform: "translateY(-6px) scale(1.01)",
+                  transform: {
+                    xs: "scale(1.01)",
+                    sm: "translateY(-6px) scale(1.01)",
+                  },
                   borderColor: "primary.light",
                 },
               }}
             >
-              <CardContent sx={{ flexGrow: 1 }}>
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: { xs: "row", sm: "column" },
+                  alignItems: { xs: "flex-start", sm: "center" },
+                  textAlign: { xs: "left", sm: "center" },
+                  p: { xs: 2, sm: 3 },
+                  gap: { xs: 2, sm: 0 },
+                }}
+              >
+                {/* Icon */}
                 <Box
-                  sx={{ display: "flex", alignItems: "center", gap: 2, mb: 1 }}
+                  component="img"
+                  src={c.DefaultIcon}
+                  alt={t(c.titleKey)}
+                  sx={{
+                    width: { xs: 48, sm: 56 },
+                    height: { xs: 48, sm: 56 },
+                    mb: { xs: 0, sm: 2 },
+                    flexShrink: 0,
+                  }}
+                />
+
+                {/* Text content wrapper for mobile */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flex: 1,
+                  }}
                 >
-                  <Box
-                    component="img"
-                    src={c.DefaultIcon}
-                    alt="image"
-                    sx={{ width: 36, height: 36 }}
-                  />
+                  {/* Title */}
                   <Typography
                     variant="h6"
-                    sx={{ lineHeight: 1.25, fontWeight: 600 }}
+                    sx={{
+                      lineHeight: 1.3,
+                      fontWeight: 600,
+                      mb: { xs: 0.5, sm: 1.5 },
+                      fontSize: { xs: "1rem", sm: "1.25rem" },
+                    }}
                   >
                     {t(c.titleKey)}
                   </Typography>
-                </Box>
-                <Typography
-                  color="text.secondary"
-                  sx={{
-                    fontSize: 14,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    display: "-webkit-box",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 4,
-                    whiteSpace: "normal",
-                  }}
-                >
-                  {t(c.descriptionKey)}
-                </Typography>
-              </CardContent>
 
-              <CardActions sx={{ p: 2, pt: 0 }}>
-                {c.ID === "social-support" ? (
-                  <Button
-                    component={RouterLink}
-                    to="/apply"
-                    variant="contained"
-                    fullWidth
+                  {/* Description */}
+                  <Typography
+                    color="text.secondary"
+                    sx={{
+                      fontSize: { xs: 13, sm: 14 },
+                      lineHeight: 1.6,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: { xs: 2, sm: 3 },
+                      whiteSpace: "normal",
+                    }}
                   >
-                    {t("open")}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outlined"
-                    fullWidth
-                    onClick={() => handleOpen(c)}
-                  >
-                    {t("open")}
-                  </Button>
-                )}
-              </CardActions>
+                    {t(c.descriptionKey)}
+                  </Typography>
+                </Box>
+              </CardContent>
             </Card>
           </Grid>
         ))}
@@ -153,26 +167,120 @@ const Home: React.FC = () => {
         open={comingOpen}
         onClose={() => setComingOpen(false)}
         aria-labelledby="coming-soon-title"
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            p: { xs: 1, sm: 2 },
+          },
+        }}
       >
-        <DialogTitle id="coming-soon-title">{t("comingSoon")}</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1" sx={{ mb: 1.5 }}>
+        <DialogTitle
+          id="coming-soon-title"
+          sx={{
+            textAlign: "center",
+            pb: 1,
+            pt: { xs: 2, sm: 3 },
+          }}
+        >
+          {/* Icon for the selected service */}
+          {selected && (
+            <Box
+              component="img"
+              src={selected.DefaultIcon}
+              alt={t(selected.titleKey)}
+              sx={{
+                width: { xs: 64, sm: 80 },
+                height: { xs: 64, sm: 80 },
+                mb: 2,
+                mx: "auto",
+                display: "block",
+                opacity: 0.9,
+              }}
+            />
+          )}
+          <Typography
+            variant="h5"
+            component="span"
+            sx={{
+              fontWeight: 600,
+              color: "primary.main",
+              display: "block",
+            }}
+          >
+            {t("comingSoon")}
+          </Typography>
+        </DialogTitle>
+
+        <DialogContent sx={{ textAlign: "center", px: { xs: 2, sm: 4 } }}>
+          <Typography
+            variant="h6"
+            sx={{
+              mb: 2,
+              fontWeight: 500,
+              color: "text.primary",
+            }}
+          >
+            {t(selected?.titleKey || "")}
+          </Typography>
+
+          <Typography
+            variant="body1"
+            sx={{
+              mb: 2,
+              color: "text.secondary",
+              lineHeight: 1.7,
+            }}
+          >
             {t("comingSoonMsg", { serviceName: t(selected?.titleKey || "") })}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+
+          <Typography
+            variant="body2"
+            sx={{
+              color: "text.secondary",
+              bgcolor: "action.hover",
+              borderRadius: 2,
+              p: 2,
+              mt: 1,
+            }}
+          >
             {t("comingSoonSubMsg", {
               defaultValue:
                 "In the meantime, you can explore other services or apply for Social Support.",
             })}
           </Typography>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setComingOpen(false)}>{t("close")}</Button>
+
+        <DialogActions
+          sx={{
+            justifyContent: "center",
+            gap: 2,
+            pb: { xs: 2, sm: 3 },
+            px: { xs: 2, sm: 4 },
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
+          <Button
+            onClick={() => setComingOpen(false)}
+            variant="outlined"
+            sx={{
+              minWidth: { xs: "100%", sm: 140 },
+              order: { xs: 2, sm: 1 },
+            }}
+          >
+            {t("close")}
+          </Button>
           <Button
             variant="contained"
             onClick={() => {
               setComingOpen(false);
               navigate("/apply");
+            }}
+            sx={{
+              minWidth: { xs: "100%", sm: 180 },
+              order: { xs: 1, sm: 2 },
             }}
           >
             {t("applyNow")}

@@ -22,6 +22,7 @@ import { useApp } from "../../context/AppContext";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import Step4 from "./Step4";
 import {
   applicationSchema,
   type ApplicationFormType,
@@ -29,8 +30,8 @@ import {
 import { STEP_FIELDS } from "../../constants/stepFields";
 import { DEFAULT_VALUES } from "../../constants/defaultValues";
 
-const steps = [<Step1 />, <Step2 />, <Step3 />];
-const STEP_SECTIONS = ["personal", "family", "situation"] as const;
+const steps = [<Step1 />, <Step2 />, <Step3 />, <Step4 />];
+const STEP_SECTIONS = ["personal", "family", "situation", "documents"] as const;
 
 const Wizard: React.FC = () => {
   const { t } = useTranslation();
@@ -87,6 +88,34 @@ const Wizard: React.FC = () => {
           "0"
         )}-${Math.floor(10000 + Math.random() * 90000)}`;
 
+        // Save application to localStorage for dashboard
+        try {
+          const existingApps = JSON.parse(
+            localStorage.getItem("tamm:ss:applications") || "[]"
+          );
+          const newApplication = {
+            id: ref,
+            submittedDate: new Date().toISOString(),
+            status: "submitted",
+            type: t("brand") + " - " + t("applyNow"),
+            lastUpdate: new Date().toISOString(),
+            estimatedCompletion: new Date(
+              Date.now() + 10 * 24 * 60 * 60 * 1000
+            ).toISOString(), // 10 days from now
+            progress: 25,
+            notes:
+              t("dashboard.status.submitted") +
+              ". " +
+              t("dashboard.trackMessage"),
+          };
+          localStorage.setItem(
+            "tamm:ss:applications",
+            JSON.stringify([...existingApps, newApplication])
+          );
+        } catch (error) {
+          console.error("Failed to save application to localStorage:", error);
+        }
+
         navigate("/submitted", { state: { reference: ref } });
       } else {
         notify(t("submissionFailed"), "error");
@@ -99,7 +128,21 @@ const Wizard: React.FC = () => {
       const ok = await methods.trigger(currentStepFields as any, {
         shouldFocus: false,
       });
-      setCanProceed(ok);
+
+      // On Step 4 (documents), also check if mandatory documents are uploaded
+      if (active === 3) {
+        const documents = methods.getValues("documents");
+        const hasNationalId = !!(
+          documents?.nationalId && documents.nationalId.length > 0
+        );
+        const hasProofOfAddress = !!(
+          documents?.proofOfAddress && documents.proofOfAddress.length > 0
+        );
+        const mandatoryDocsUploaded = hasNationalId && hasProofOfAddress;
+        setCanProceed(ok && mandatoryDocsUploaded);
+      } else {
+        setCanProceed(ok);
+      }
     };
 
     checkValidity();
@@ -109,17 +152,29 @@ const Wizard: React.FC = () => {
     t("steps.personal"),
     t("steps.family"),
     t("steps.situation"),
+    t("steps.documents"),
   ];
 
   return (
     <FormProvider {...methods}>
-      <Card>
-        <CardHeader title={t("applyNow")} subheader={t("open")} />{" "}
-        <CardContent>
+      <Card sx={{ borderRadius: { xs: 1, sm: 2 } }}>
+        <CardHeader
+          title={t("applyNow")}
+          subheader={t("open")}
+          sx={{
+            "& .MuiCardHeader-title": {
+              fontSize: { xs: "1.25rem", sm: "1.5rem" },
+            },
+            "& .MuiCardHeader-subheader": {
+              fontSize: { xs: "0.875rem", sm: "1rem" },
+            },
+          }}
+        />{" "}
+        <CardContent sx={{ px: { xs: 2, sm: 3 }, py: { xs: 2, sm: 3 } }}>
           {loading ? (
             <Box
               sx={{
-                height: "300px",
+                height: { xs: "200px", sm: "300px" },
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -128,24 +183,40 @@ const Wizard: React.FC = () => {
               }}
             >
               <CircularProgress />
-              <Typography variant="h6" color="text.secondary">
+              <Typography
+                variant="h6"
+                color="text.secondary"
+                sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}
+              >
                 {t("processing")}
               </Typography>
             </Box>
           ) : (
-            <Stack spacing={3}>
+            <Stack spacing={{ xs: 2, sm: 3 }}>
               <Box>
                 <LinearProgress
                   variant="determinate"
                   value={progress}
                   aria-label="Progress"
+                  sx={{ height: { xs: 6, sm: 8 } }}
                 />
               </Box>
               <FormStepper activeStep={active} steps={stepLabels} /> <Divider />
               {steps[active]}
               <Divider />
-              <Stack direction="row" gap={2} justifyContent="space-between">
-                <Button disabled={active === 0} onClick={back}>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                gap={2}
+                justifyContent="space-between"
+              >
+                <Button
+                  disabled={active === 0}
+                  onClick={back}
+                  sx={{
+                    order: { xs: 2, sm: 1 },
+                    width: { xs: "100%", sm: "auto" },
+                  }}
+                >
                   {t("back")}
                 </Button>
                 {active < steps.length - 1 ? (
@@ -153,6 +224,10 @@ const Wizard: React.FC = () => {
                     variant="contained"
                     onClick={next}
                     disabled={!canProceed}
+                    sx={{
+                      order: { xs: 1, sm: 2 },
+                      width: { xs: "100%", sm: "auto" },
+                    }}
                   >
                     {t("next")}
                   </Button>
@@ -161,6 +236,10 @@ const Wizard: React.FC = () => {
                     variant="contained"
                     onClick={onSubmit}
                     disabled={loading || !canProceed}
+                    sx={{
+                      order: { xs: 1, sm: 2 },
+                      width: { xs: "100%", sm: "auto" },
+                    }}
                   >
                     {t("submit")}
                   </Button>

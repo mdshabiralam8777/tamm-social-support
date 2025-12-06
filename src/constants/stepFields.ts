@@ -28,4 +28,11 @@ export const STEP_FIELDS = [
     "situation.employmentCircumstances",
     "situation.reasonForApplying",
   ],
+  // Step 4: documents
+  [
+    "documents.nationalId",
+    "documents.proofOfAddress",
+    "documents.incomeProof",
+    "documents.additionalDocuments",
+  ],
 ] as const;

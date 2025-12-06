@@ -38,11 +38,12 @@ const Step3: React.FC = () => {
                 label={config.label}
                 placeholder={config.placeholder}
                 multiline
-                minRows={5}
+                minRows={config.rows || 4}
                 fullWidth
                 required
                 error={show(fieldState)}
                 helperText={show(fieldState) ? fieldState.error?.message : " "}
+                InputLabelProps={{ shrink: true }}
                 InputProps={{
                   endAdornment: (
                     <Tooltip title={t("helpMeWrite")}>
@@ -71,11 +72,17 @@ const Step3: React.FC = () => {
             setValue(activeField.name as any, text, { shouldDirty: true });
             setOpenFieldId(null);
           }}
-          seedPrompt={`${
-            activeField.seedText
-          }\nApplicant context (optional): ${JSON.stringify(
-            getValues("family") || {}
-          )}`}
+          seedPrompt={`${activeField.seedText}
+
+          APPLICANT CONTEXT (use this to personalize the response):
+          --- Personal Info ---
+          ${JSON.stringify(getValues("personal") || {}, null, 2)}
+
+          --- Family & Financial Info ---
+          ${JSON.stringify(getValues("family") || {}, null, 2)}
+
+          --- Current field value (if any, improve on this) ---
+          ${getValues(activeField.name as any) || "(empty - generate fresh)"}`}
         />
       )}
     </Grid>
