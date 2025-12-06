@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import YouTubeIcon from "@mui/icons-material/YouTube";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 const Footer: React.FC = () => {
@@ -51,11 +50,6 @@ const Footer: React.FC = () => {
       href: "https://www.instagram.com/abudhabi_tamm/?hl=en",
       label: "Instagram",
     },
-    // {
-    //   icon: <YouTubeIcon />,
-    //   href: "https://www.youtube.com/c/TammAbuDhabi",
-    //   label: "YouTube",
-    // },
     {
       icon: <LinkedInIcon />,
       href: "https://www.linkedin.com/company/abu-dhabi-tamm/",
