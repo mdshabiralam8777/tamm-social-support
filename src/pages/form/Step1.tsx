@@ -64,6 +64,7 @@ const Step1: React.FC = () => {
                 name={fieldConfig.name}
                 label={fieldConfig.label}
                 type={fieldConfig.type}
+                formatHint={fieldConfig.formatHint}
               />
             )}
           </Grid>

@@ -55,6 +55,7 @@ const Step2: React.FC = () => {
                 name={config.name}
                 label={config.label}
                 type={config.type}
+                formatHint={config.formatHint}
               />
             )}
           </Grid>

@@ -275,6 +275,35 @@ const resources = {
         daysAgo_other: "{{count}} days ago",
         weeksAgo: "{{count}} week ago",
         weeksAgo_other: "{{count}} weeks ago",
+
+        // Mock data notes
+        notes: {
+          inReview:
+            "Application is currently being reviewed by the caseworker.",
+          approved: "Application approved. Support payments approved.",
+          pending: "Please upload your updated salary certificate.",
+        },
+      },
+
+      // Application Tracker
+      tracker: {
+        stepSubmittedDesc:
+          "Your application has been received and is waiting for initial review.",
+        stepReviewDesc:
+          "Our team is currently reviewing your application details and documents.",
+        stepPendingDesc:
+          "We need some additional information or documents from you to proceed.",
+        stepRejectedDesc:
+          "Unfortunately, your application could not be approved at this time.",
+        stepApprovedDesc:
+          "Congratulations! Your application has been approved.",
+        notFound: "Application not found",
+        backToDashboard: "Back to Dashboard",
+        applicationId: "Application ID",
+        timeline: "Application Timeline",
+        details: "Details",
+        documents: "Documents",
+        noDocuments: "No documents uploaded yet.",
       },
 
       // Form Validation Hints
@@ -557,6 +586,30 @@ const resources = {
         daysAgo_other: "منذ {{count}} أيام",
         weeksAgo: "منذ {{count}} أسبوع",
         weeksAgo_other: "منذ {{count}} أسابيع",
+
+        // Mock data notes
+        notes: {
+          inReview: "يتم حالياً مراجعة الطلب من قبل الموظف المختص.",
+          approved: "تمت الموافقة على الطلب. تم اعتماد دفعات الدعم.",
+          pending: "يرجى تحميل شهادة الراتب المحدثة.",
+        },
+      },
+
+      // Application Tracker
+      tracker: {
+        stepSubmittedDesc: "تم استلام طلبك وهو في انتظار المراجعة الأولية.",
+        stepReviewDesc: "يقوم فريقنا حالياً بمراجعة تفاصيل طلبك والمستندات.",
+        stepPendingDesc:
+          "نحتاج إلى بعض المعلومات الإضافية أو المستندات للمتابعة.",
+        stepRejectedDesc: "للأسف، تعذر الموافقة على طلبك في الوقت الحالي.",
+        stepApprovedDesc: "تهانينا! تمت الموافقة على طلبك.",
+        notFound: "الطلب غير موجود",
+        backToDashboard: "عودة إلى لوحة المعلومات",
+        applicationId: "رقم الطلب",
+        timeline: "الجدول الزمني للطلب",
+        details: "التفاصيل",
+        documents: "المستندات",
+        noDocuments: "لم يتم تحميل أي مستندات بعد.",
       },
 
       // Form Validation Hints

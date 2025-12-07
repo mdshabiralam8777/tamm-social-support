@@ -52,7 +52,7 @@ const ApplicationTracker: React.FC = () => {
     // Simulate API fetch delay
     const timer = setTimeout(() => {
       try {
-        const stored = localStorage.getItem("tamm:ss:applications");
+        const stored = localStorage.getItem("tamm:ss:applications:v2");
         const applications: Application[] = stored ? JSON.parse(stored) : [];
         const found = applications.find((app) => app.id === id);
         setApplication(found || null);
@@ -257,7 +257,7 @@ const ApplicationTracker: React.FC = () => {
               severity={getAlertSeverity(application.status)}
               sx={{ mt: 2, mb: 2 }}
             >
-              {application.notes}
+              {t(application.notes)}
             </Alert>
 
             <Divider sx={{ my: 3 }} />

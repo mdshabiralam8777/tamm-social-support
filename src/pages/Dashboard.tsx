@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Container,
@@ -41,17 +41,76 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   // Load applications from localStorage
-  const loadApplications = (): Application[] => {
-    try {
-      const stored = localStorage.getItem("tamm:ss:applications");
-      return stored ? JSON.parse(stored) : [];
-    } catch (error) {
-      console.error("Failed to load applications:", error);
-      return [];
-    }
-  };
+  const [applications, setApplications] = React.useState<Application[]>([]);
 
-  const applications = loadApplications();
+  useEffect(() => {
+    const loadApplications = () => {
+      try {
+        const stored = localStorage.getItem("tamm:ss:applications:v2");
+        if (stored) {
+          setApplications(JSON.parse(stored));
+        } else {
+          // Seed mock data if empty
+          const mockApplications: Application[] = [
+            {
+              id: "SS-20241201-8921",
+              submittedDate: new Date(
+                Date.now() - 5 * 24 * 60 * 60 * 1000
+              ).toISOString(),
+              status: "in_review",
+              type: "Social Support",
+              lastUpdate: new Date(
+                Date.now() - 2 * 24 * 60 * 60 * 1000
+              ).toISOString(),
+              estimatedCompletion: new Date(
+                Date.now() + 10 * 24 * 60 * 60 * 1000
+              ).toISOString(),
+              progress: 35,
+              notes: "dashboard.notes.inReview",
+            },
+            {
+              id: "SS-20241115-3342",
+              submittedDate: new Date(
+                Date.now() - 22 * 24 * 60 * 60 * 1000
+              ).toISOString(),
+              status: "approved",
+              type: "Housing Assistance",
+              lastUpdate: new Date(
+                Date.now() - 15 * 24 * 60 * 60 * 1000
+              ).toISOString(),
+              completedDate: new Date(
+                Date.now() - 15 * 24 * 60 * 60 * 1000
+              ).toISOString(),
+              progress: 100,
+              notes: "dashboard.notes.approved",
+            },
+            {
+              id: "SS-20241020-1122",
+              submittedDate: new Date(
+                Date.now() - 45 * 24 * 60 * 60 * 1000
+              ).toISOString(),
+              status: "pending_documents",
+              type: "Education Support",
+              lastUpdate: new Date(
+                Date.now() - 2 * 24 * 60 * 60 * 1000
+              ).toISOString(),
+              progress: 60,
+              notes: "dashboard.notes.pending",
+            },
+          ];
+          localStorage.setItem(
+            "tamm:ss:applications:v2",
+            JSON.stringify(mockApplications)
+          );
+          setApplications(mockApplications);
+        }
+      } catch (error) {
+        console.error("Failed to load applications:", error);
+      }
+    };
+
+    loadApplications();
+  }, []);
 
   const getStatusColor = (
     status: Application["status"]
@@ -335,7 +394,7 @@ const Dashboard: React.FC = () => {
                       },
                     }}
                   >
-                    {application.notes}
+                    {t(application.notes)}
                   </Alert>
 
                   {/* Actions */}
