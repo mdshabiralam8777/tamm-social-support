@@ -1,266 +1,121 @@
-# TAMM Social Support
+# TAMM Social Support Portal
 
-A **React + TypeScript** web application for applying to government social support programs.
-Built with **Material UI**, **react-hook-form**, **Zod**, and **react-i18next** for internationalization (English + Arabic).
-Includes AI-assisted text generation for writing situation descriptions using **OpenAI GPT API**.
+A **production-ready**, **accessible**, and **bilingual (EN/AR)** web application for government social support services. Built as a case study, this project demonstrates a complete user journey from application to status tracking, enhanced with AI-powered assistance.
 
----
-
-## 🏗️ Tech Stack
-
-| Layer      | Technology                       |
-| ---------- | -------------------------------- |
-| Framework  | React (Vite + TypeScript)        |
-| UI Library | Material UI (MUI)                |
-| Styling    | MUI `sx` + optional Tailwind     |
-| Forms      | React Hook Form + Zod            |
-| i18n       | react-i18next                    |
-| Routing    | React Router v6                  |
-| API        | Axios / Fetch (mocked for now)   |
-| State      | Context API + local state        |
-| Storage    | LocalStorage (draft persistence) |
+> **Live Demo:** [tamm-social-support.vercel.app](https://tamm-social-support.vercel.app/) _(If deployed)_
 
 ---
 
-## 🚀 Features
+## 📚 Documentation
 
-- 🧭 **3-Step Multi-form Wizard**
-  Personal Info → Family & Financial Info → Situation Descriptions
-  with inline validation and step gating.
-
-- 💾 **Auto-save Progress** (LocalStorage)
-
-- 🧠 **AI Assistance**
-  “Help Me Write” buttons that call OpenAI API to generate text suggestions.
-
-- 🌐 **Multilingual Support**
-  English and Arabic (RTL layout + language switch).
-
-- 🔒 **Accessible**
-  Keyboard-friendly, ARIA labels, clear form focus handling.
-
-- 📱 **Responsive Design**
-  Works smoothly across mobile, tablet, and desktop.
-
-- 🎯 **Well-structured Codebase**
-  Modular folder organization with constants, schemas, hooks, and components.
+| Document                              | Description                                                                         |
+| :------------------------------------ | :---------------------------------------------------------------------------------- |
+| [**Assignment**](./assignment.md)     | Original case study requirements.                                                   |
+| [**Enhancements**](./enhancements.md) | Features implemented _beyond_ the assignment scope (Dashboard, Chatbot, UI Polish). |
+| [**Architecture**](./Architecture.md) | Technical deep-dive: state management, validation, and data flow.                   |
 
 ---
 
-## 🧩 Project Structure
+## ✨ Features at a Glance
 
-```
-src/
-├─ assets/                 # Images, icons, mock data
-│  └─ mock/services.json
-├─ components/             # Shared UI components
-│  ├─ NavBar.tsx
-│  ├─ LanguageSwitch.tsx
-│  ├─ HelpMeWriteDialog.tsx
-│  └─ FormStepper.tsx
-├─ context/
-│  └─ AppContext.tsx       # Global notification context
-├─ hooks/
-│  └─ useFormPersist.ts    # Auto-save form drafts
-├─ pages/
-│  ├─ Home.tsx
-│  └─ form/
-│     ├─ Wizard.tsx
-│     ├─ Step1.tsx
-│     ├─ Step2.tsx
-│     ├─ Step3.tsx
-│     └─ SubmissionSuccess.tsx
-├─ schema/
-│  └─ applicationSchema.ts # Zod + i18n-aware validation schema
-├─ constants/
-│  ├─ stepFields.ts
-│  └─ defaultValues.ts
-├─ services/
-│  └─ api.ts               # Mock submit + OpenAI API integration
-├─ locales/                # Translation files (en/ar)
-│  ├─ en/translation.json
-│  └─ ar/translation.json
-├─ i18n.ts                 # i18n configuration
-├─ App.tsx
-└─ main.tsx
-```
+- 🧭 **4-Step Smart Wizard:** Personal Info → Family & Finance → Situation Descriptions → Document Uploads.
+- 🤖 **AI "Help Me Write":** OpenAI-powered text suggestions for free-form fields.
+- 💬 **AI Chatbot:** Contextual, bilingual assistant for user guidance.
+- 📊 **Application Dashboard:** Track submission status, view timelines, and manage applications.
+- 🌐 **Bilingual (EN/AR):** Full RTL layout support with dynamic language switching.
+- 💾 **Auto-Save Drafts:** Never lose progress, data persists in LocalStorage.
+- ♿ **Accessible:** Semantic HTML, ARIA roles, and full keyboard navigation.
 
 ---
 
-## ⚙️ Installation & Setup
+## 🛠️ Tech Stack
+
+| Category        | Technology                         |
+| :-------------- | :--------------------------------- |
+| **Framework**   | React 18 (Vite)                    |
+| **Language**    | TypeScript (Strict Mode)           |
+| **UI**          | Material UI v5 + Custom TAMM Theme |
+| **Forms**       | react-hook-form + Zod              |
+| **i18n**        | react-i18next                      |
+| **AI**          | OpenAI Chat Completions API        |
+| **State**       | React Context API                  |
+| **Persistence** | LocalStorage                       |
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-Ensure you have the following installed:
+- **Node.js** v18+
+- An **OpenAI API Key**
 
-- **Node.js** ≥ 18 (you have v22.18.0 ✅)
-- **npm** ≥ 10
-
----
-
-### 1. Clone the repository
+### 1. Clone & Install
 
 ```bash
 git clone https://github.com/mdshabiralam8777/tamm-social-support.git
 cd tamm-social-support
-```
-
-### 2. Install dependencies
-
-```bash
 npm install
 ```
 
-If you get version errors for `react-i18next`, install manually:
-
-```bash
-npm install react-i18next@13.3.1 i18next@25.5.3 i18next-browser-languagedetector
-```
-
----
-
-### 3. Environment variables
+### 2. Configure Environment
 
 Create a `.env` file in the project root:
 
-```bash
-touch .env
-```
-
-Add your **OpenAI API Key**:
-
 ```env
-VITE_OPENAI_API_KEY=sk-your_openai_api_key_here
+VITE_OPENAI_API_KEY=sk-your_api_key_here
 VITE_OPENAI_MODEL=gpt-3.5-turbo
 ```
 
-> ⚠️ **Do not commit this file.** > `.env` is already listed in `.gitignore`.
+> ⚠️ **Important:** Do not commit `.env` to version control. It is already in `.gitignore`.
 
----
-
-### 4. Run the project locally
+### 3. Run the Development Server
 
 ```bash
 npm run dev
 ```
 
-Visit 👉 [http://localhost:5173](http://localhost:5173)
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
----
-
-### 5. Build for production
+### 4. Build for Production
 
 ```bash
 npm run build
-```
-
-Preview build output:
-
-```bash
-npm run preview
+npm run preview  # To preview the production build
 ```
 
 ---
 
-### 6. Deploy to Vercel
+## 📂 Project Structure
 
-1. Push your code to GitHub.
-2. Log in to [Vercel](https://vercel.com).
-3. **Import Project →** select this repo.
-4. Framework preset: **Vite**.
-5. Add the environment variable:
-
-   ```
-   VITE_OPENAI_API_KEY = sk-your_openai_api_key
-   ```
-
-6. Deploy.
-
----
-
-## 🤖 OpenAI Integration
-
-### Location
-
-`src/services/api.ts`
-
-### API call (example)
-
-```ts
-import axios from "axios";
-
-export async function generateText(prompt: string) {
-  const res = await axios.post(
-    "https://api.openai.com/v1/chat/completions",
-    {
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt }],
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-      },
-    }
-  );
-  return res.data.choices[0].message.content;
-}
+```
+src/
+├── components/     # Reusable UI (NavBar, Footer, Chatbot, Stepper)
+├── pages/          # Route views (Home, Dashboard, Wizard steps)
+├── hooks/          # Custom hooks (useFormPersist)
+├── services/       # API layer (OpenAI, mock backend)
+├── schema/         # Zod validation schemas (i18n-aware)
+├── constants/      # Step definitions, default form values
+├── context/        # Global state providers (AppContext)
+├── locales/        # Translation files (en, ar)
+└── theme.ts        # Custom MUI theme (TAMM colors)
 ```
 
-Used in **Step 3** fields (`HelpMeWriteDialog`) to provide text suggestions.
-
----
-
-## 📄 Architecture Overview
-
-A high-level explanation of the app’s architecture is in
-[`Architecture.md`](./Architecture.md).
-
-It covers:
-
-- React + TypeScript structure
-- Form validation flow
-- i18n implementation
-- Wizard step logic
-- State and persistence
-- Future improvement areas
-
----
-
-## 🧠 Design Decisions & Improvements
-
-### Why React Hook Form + Zod
-
-- Excellent performance for large multi-step forms.
-- Built-in validation and error control.
-- No need for controlled input re-renders.
-
-### Why i18n with `buildApplicationSchema(t)`
-
-- Ensures all validation messages translate dynamically on language switch.
-- Keeps validation logic and UI perfectly in sync.
-
-### Future Enhancements
-
-- Emotion RTL cache for full MUI RTL styling.
-- Integrate real backend API (replace mock).
-- Add unit tests and e2e testing (Testing Library / Cypress).
-- Generate PDF confirmation receipt after submission.
+See [Architecture.md](./Architecture.md) for a detailed explanation of the data flow and design decisions.
 
 ---
 
 ## 🧑‍💻 Author
 
 **Mohammed Shabir Alam**
-Senior Frontend Developer — Angular | React | Node.js | MongoDB
-🌍 Dubai, UAE
+Senior Frontend Developer | Angular, React, Node.js
+📍 Dubai, UAE
 
-🔗 [GitHub](https://github.com/mdshabiralam8777)
-💼 [Portfolio](https://mohammedshabiralam-personal-portfolio.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-mdshabiralam8777-181717?logo=github)](https://github.com/mdshabiralam8777)
 
 ---
 
-## 🪪 License
+## 📄 License
 
-This project is for **educational and demo** purposes only.
-© 2025 Mohammed Shabir Alam — All Rights Reserved.
+This project is for **educational and demonstration purposes** only.
+© 2025 Mohammed Shabir Alam
