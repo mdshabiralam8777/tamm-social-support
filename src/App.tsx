@@ -22,6 +22,10 @@ const App: React.FC = () => {
     setChatbotOpen(!isChatbotOpen);
   };
 
+  React.useEffect(() => {
+    document.title = `${t("brand")} - ${t("applyNow")}`;
+  }, [t]);
+
   return (
     <BrowserRouter>
       <Box

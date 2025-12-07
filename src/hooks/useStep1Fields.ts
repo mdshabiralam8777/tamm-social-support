@@ -8,16 +8,19 @@ export const useStep1Fields = () => {
       name: "personal.name",
       label: t("form.step1.name"),
       type: "text",
+      formatHint: t("formHints.name"),
     },
     {
       name: "personal.nationalId",
       label: t("form.step1.nationalId"),
       type: "text",
+      formatHint: t("formHints.emiratesId"),
     },
     {
       name: "personal.dob",
       label: t("form.step1.dob"),
       type: "date",
+      formatHint: t("formHints.dob"),
     },
     {
       name: "personal.gender",
@@ -33,6 +36,7 @@ export const useStep1Fields = () => {
       name: "personal.address",
       label: t("form.step1.address"),
       type: "text",
+      formatHint: t("formHints.address"),
     },
     { name: "personal.city", label: t("form.step1.city"), type: "text" },
     { name: "personal.state", label: t("form.step1.state"), type: "text" },
@@ -41,11 +45,13 @@ export const useStep1Fields = () => {
       name: "personal.phone",
       label: t("form.step1.phone"),
       type: "tel",
+      formatHint: t("formHints.phone"),
     },
     {
       name: "personal.email",
       label: t("form.step1.email"),
       type: "email",
+      // formatHint: t("formHints.email"),
     },
   ];
 

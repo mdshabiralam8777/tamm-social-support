@@ -158,15 +158,15 @@ These are great to **discuss in the interview** as "what I would do with more ti
 ### Current Session To-Do:
 
 - [ ] View task.md to update progress
-- [ ] Implement Application Status Dashboard
-  - [ ] Create Dashboard.tsx component
-  - [ ] Create mock applications data
-  - [ ] Add status badge components
-  - [ ] Create timeline visualization
-  - [ ] Add route to App.tsx
-  - [ ] Update navbar with "My Applications" link
-  - [ ] Add i18n translations
-  - [ ] Link from SubmissionSuccess page
+- [/] Implement Application Status Dashboard
+  - [x] Create Dashboard.tsx component
+  - [x] Create mock applications data
+  - [x] Add status badge components
+  - [x] Create timeline visualization
+  - [x] Add route to App.tsx
+  - [x] Update navbar with "My Applications" link
+  - [x] Add i18n translations
+  - [x] Link from SubmissionSuccess page
   - [ ] Test on mobile/desktop
 - [ ] Update walkthrough.md with new feature
 - [ ] Test entire application flow end-to-end

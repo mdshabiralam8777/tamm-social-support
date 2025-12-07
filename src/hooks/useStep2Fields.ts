@@ -27,6 +27,7 @@ export const useStep2Fields = () => {
             name: "family.spouseName",
             label: t("form.step2.spouseName"),
             type: "text",
+            formatHint: t("formHints.spouseName"),
           },
         ]
       : []),
@@ -35,12 +36,14 @@ export const useStep2Fields = () => {
       label: t("form.step2.dependents"),
       type: "number",
       inputProps: { min: 0, max: 20 },
+      formatHint: t("formHints.dependents"),
     },
     {
       name: "family.householdMembers",
       label: t("form.step2.householdMembers"),
       type: "number",
       inputProps: { min: 1, max: 50 },
+      formatHint: t("formHints.householdMembers"),
     },
     {
       name: "family.employmentStatus",
@@ -64,12 +67,14 @@ export const useStep2Fields = () => {
       label: t("form.step2.monthlyIncome"),
       type: "number",
       inputProps: { min: 0, step: 100 },
+      formatHint: t("formHints.monthlyIncome"),
     },
     {
       name: "family.otherIncome",
       label: t("form.step2.otherIncome"),
       type: "number",
       inputProps: { min: 0, step: 100 },
+      formatHint: t("formHints.otherIncome"),
     },
     {
       name: "family.housingStatus",
@@ -93,6 +98,7 @@ export const useStep2Fields = () => {
                 : t("form.step2.monthlyMortgage"),
             type: "number",
             inputProps: { min: 0, step: 100 },
+            formatHint: t("formHints.monthlyHousingCost"),
           },
         ]
       : []),
@@ -101,16 +107,19 @@ export const useStep2Fields = () => {
       label: t("form.step2.monthlyExpenses"),
       type: "number",
       inputProps: { min: 0, step: 100 },
+      formatHint: t("formHints.monthlyExpenses"),
     },
     {
       name: "family.emergencyContactName",
       label: t("form.step2.emergencyContactName"),
       type: "text",
+      formatHint: t("formHints.emergencyContact"),
     },
     {
       name: "family.emergencyContactPhone",
       label: t("form.step2.emergencyContactPhone"),
       type: "tel",
+      formatHint: t("formHints.phone"),
     },
   ];
 

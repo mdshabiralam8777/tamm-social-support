@@ -10,6 +10,7 @@ interface ValidatedTextFieldProps {
   multiline?: boolean;
   rows?: number;
   disabled?: boolean;
+  formatHint?: string;
 }
 
 const ValidatedTextField: React.FC<ValidatedTextFieldProps> = ({
@@ -19,6 +20,7 @@ const ValidatedTextField: React.FC<ValidatedTextFieldProps> = ({
   multiline = false,
   rows,
   disabled = false,
+  formatHint,
 }) => {
   const { control } = useFormContext();
 
@@ -35,8 +37,10 @@ const ValidatedTextField: React.FC<ValidatedTextFieldProps> = ({
           field.value &&
           field.value.toString().length > 0;
 
-        // Only show error message, no hints
-        const displayHelperText = showError ? fieldState.error?.message : " ";
+        // Show error message if error, otherwise show format hint if available
+        const displayHelperText = showError
+          ? fieldState.error?.message
+          : formatHint || " ";
 
         return (
           <TextField
