@@ -1,20 +1,22 @@
 # Architecture
 
-## Overview
+This document provides a technical deep-dive into the **TAMM Social Support Portal**. It covers the stack decisions, data flow, state management, and design patterns used throughout the application.
 
-**TAMM Social Support** is a Vite + React (TypeScript) SPA that guides citizens through a 3-step application wizard with i18n (EN/AR), accessibility, draft persistence, and an AI “Help Me Write” assistant.
+---
 
 ## Tech Stack
 
-- **Runtime:** Node 22, npm 10
-- **Build:** Vite + React + TypeScript
-- **UI:** Material UI (MUI)
-- **Forms:** react-hook-form + Zod
-- **i18n:** react-i18next
-- **Routing:** react-router-dom
-- **State:** React Context (lightweight) + component state
-- **HTTP:** fetch/axios (mock submit)
-- **Persistence:** localStorage (drafts)
+| Layer                    | Technology            | Purpose                                              |
+| :----------------------- | :-------------------- | :--------------------------------------------------- |
+| **Build & Runtime**      | Vite + Node 22        | Fast builds, HMR, modern ES modules                  |
+| **UI Framework**         | React 18 + TypeScript | Component-based UI with strong typing                |
+| **Component Library**    | Material UI (MUI) v5  | Accessible, themeable component primitives           |
+| **Forms**                | react-hook-form + Zod | Performant form state with schema-based validation   |
+| **Internationalization** | react-i18next         | Multi-language support (EN/AR/RTL)                   |
+| **Routing**              | react-router-dom v6   | Declarative client-side routing                      |
+| **State**                | React Context API     | Lightweight global state (notifications, app config) |
+| **Persistence**          | LocalStorage          | Draft saving, chat history, application tracking     |
+| **AI**                   | OpenAI API (GPT-3.5)  | Text generation for "Help Me Write" feature          |
 
 ---
 
@@ -22,243 +24,197 @@
 
 ```
 tamm-social-support/
-├─ public/
-├─ .env.example
-├─ .gitignore
-├─ index.html
-├─ README.md
-├─ Architecture.md   <-- this file
-└─ src/
-   ├─ main.tsx
-   ├─ i18n.ts
-   ├─ App.tsx
-   ├─ assets/
-   │  ├─ InnerBannerLightBG.jpg
-   │  ├─ svgs/
-   │  │  └─ tamm-log.svg
-   │  └─ mock/
-   │     └─ services.json
-   ├─ components/
-   │  ├─ NavBar.tsx
-   │  ├─ LanguageSwitch.tsx
-   │  ├─ FormStepper.tsx
-   │  └─ HelpMeWriteDialog.tsx
-   ├─ context/
-   │  └─ AppContext.tsx
-   ├─ hooks/
-   │  └─ useFormPersist.ts
-   ├─ pages/
-   │  ├─ Home.tsx
-   │  └─ form/
-   │     ├─ Wizard.tsx
-   │     ├─ Step1.tsx
-   │     ├─ Step2.tsx
-   │     ├─ Step3.tsx
-   │     └─ SubmissionSuccess.tsx
-   ├─ schema/
-   │  └─ applicationSchema.ts   // buildApplicationSchema(t) + types
-   ├─ constants/
-   │  ├─ defaultValues.ts       // DEFAULT_VALUES
-   │  └─ stepFields.ts          // STEP_FIELDS
-   ├─ services/
-   │  └─ api.ts                 // submitApplication (mock)
-   └─ locales/
-      ├─ en/translation.json
-      └─ ar/translation.json
+├── public/                     # Static assets
+├── src/
+│   ├── assets/                 # Images, icons, mock data
+│   │   └── mock/services.json
+│   ├── components/             # Reusable UI components
+│   │   ├── NavBar.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Chatbot.tsx
+│   │   ├── LanguageSwitch.tsx
+│   │   ├── FormStepper.tsx
+│   │   ├── HelpMeWriteDialog.tsx
+│   │   └── ValidatedTextField.tsx
+│   ├── context/
+│   │   └── AppContext.tsx      # Global notification provider
+│   ├── hooks/
+│   │   └── useFormPersist.ts   # Auto-save form drafts
+│   ├── pages/
+│   │   ├── Home.tsx            # Landing page
+│   │   ├── Dashboard.tsx       # Application status tracking
+│   │   ├── ApplicationTracker.tsx
+│   │   └── form/
+│   │       ├── Wizard.tsx      # Main form orchestrator
+│   │       ├── Step1.tsx       # Personal Information
+│   │       ├── Step2.tsx       # Family & Financial
+│   │       ├── Step3.tsx       # Situation Descriptions + AI
+│   │       ├── Step4.tsx       # Document Uploads
+│   │       └── SubmissionSuccess.tsx
+│   ├── schema/
+│   │   └── applicationSchema.ts # Zod schema (i18n-aware)
+│   ├── constants/
+│   │   ├── defaultValues.ts
+│   │   └── stepFields.ts
+│   ├── services/
+│   │   ├── api.ts              # Mock API + OpenAI integration
+│   │   └── tammInformation.ts  # Chatbot knowledge base
+│   ├── locales/
+│   │   ├── en/translation.json
+│   │   └── ar/translation.json
+│   ├── theme.ts                # Custom TAMM MUI theme
+│   ├── i18n.ts
+│   ├── App.tsx
+│   └── main.tsx
+├── .env.example
+├── README.md
+├── assignment.md
+├── enhancements.md
+└── Architecture.md             # This file
 ```
 
 ---
 
-## App Flow
+## Application Flow
 
-1. **Landing (/**)\*\*
+### 1. Landing Page (`/`)
 
-   -  Banner + services grid (cards).
-   - “Social Support → Open” navigates to `/apply`.
-   - Other services show a common **Coming Soon** dialog.
+- Hero banner showcasing available services.
+- Clicking **"Social Support → Open"** navigates to `/apply`.
+- Other services display a **"Coming Soon"** dialog.
 
-2. **Wizard (/apply)**
+### 2. Application Wizard (`/apply`)
 
-   - 3 steps with progress bar:
+- **4-step wizard** with a progress bar:
+  1.  **Personal Information:** Name, ID, Contact details.
+  2.  **Family & Financial Info:** Marital status, dependents, income.
+  3.  **Situation Descriptions:** Free-text areas with AI "Help Me Write".
+  4.  **Document Uploads:** National ID, Proof of Address, Income Proof.
+- **Validation:** Inline, per-step validation. "Next" button is disabled until the step is valid.
+- **Persistence:** Form data is auto-saved to `localStorage`.
 
-     1. Personal Information
-     2. Family & Financial Info
-     3. Situation Descriptions (+ “Help Me Write” AI)
+### 3. Submission & Success (`/submitted`)
 
-   - Inline validation, “Next” disabled until the current step is valid.
-   - Draft auto-save to localStorage.
+- Mock API call with a simulated loading state.
+- On success, the user is presented with a unique **Reference Number**.
+- The application is saved to `localStorage` for viewing on the Dashboard.
 
-3. **Submission**
+### 4. Dashboard (`/dashboard`)
 
-   - Mock API call + 2.5s “Processing…” state.
-   - On success → `/submitted` with generated reference number.
-
----
-
-## Forms & Validation
-
-- **react-hook-form** orchestrates the form via `<FormProvider>`; each step uses `useFormContext()` and `Controller` to bind MUI inputs.
-- **Zod schema** is **i18n-aware**:
-
-  - `buildApplicationSchema(t)` produces validation messages in the active language.
-  - `Wizard.tsx` memoizes the schema by `i18n.language`.
-
-- **Validation UX**
-
-  - `mode: "onTouched"`, `reValidateMode: "onChange"`.
-  - Errors show only after touch/typing (`fieldState.isTouched || isDirty`).
-  - `STEP_FIELDS` lists per-step paths; `trigger()` checks current step to compute `canProceed`.
-  - **Important:** Avoided `useWatch({ control })` on the whole form to prevent heavy re-renders.
-
-**Snippet — enabling/disabling Next**
-
-```ts
-useEffect(() => {
-  (async () => {
-    const ok = await methods.trigger(STEP_FIELDS[active] as any, {
-      shouldFocus: false,
-    });
-    setCanProceed(ok);
-  })();
-}, [active, methods]);
-```
+- Displays all tracked applications.
+- Shows status (Submitted, In Review, Approved), timeline, and progress.
 
 ---
 
-## Internationalization (EN/AR)
+## Form & Validation Architecture
 
-- **i18n bootstrap (`i18n.ts`)** loads `locales/en|ar/translation.json` and sets `document.dir` (`rtl` for Arabic).
-- **LanguageSwitch** toggles language, persists to `localStorage`, updates dir.
-- **Every visible string** comes from `t(...)` (labels, placeholders, buttons, dialogs).
-- **Validation messages** localize via `buildApplicationSchema(t)`.
+This application uses **react-hook-form** for state management and **Zod** for schema validation.
 
-**Snippet — using i18n in fields**
+### Key Design Decisions
+
+1.  **I18n-Aware Schemas:** The `applicationSchema` is a function `buildApplicationSchema(t)` that takes the i18n `t` function, allowing all validation error messages to be translated.
+
+2.  **Per-Step Validation:** The `STEP_FIELDS` constant maps each wizard step to a list of field paths. The `Wizard.tsx` component uses `methods.trigger()` on these paths to enable/disable the "Next" button.
+
+3.  **Performance:** We avoid `useWatch({ control })` on the entire form object to prevent expensive re-renders. Instead, we watch only the fields relevant to the current step.
 
 ```tsx
-const { t } = useTranslation();
-<TextField label={t("form.personal.name")} />
-<MenuItem value="male">{t("options.gender.male")}</MenuItem>
+// Wizard.tsx - Efficient step validation
+const currentStepFields = STEP_FIELDS[active];
+const watchedValues = methods.watch(currentStepFields as any);
+
+useEffect(() => {
+  const checkValidity = async () => {
+    const ok = await methods.trigger(currentStepFields, { shouldFocus: false });
+    setCanProceed(ok);
+  };
+  checkValidity();
+}, [JSON.stringify(watchedValues), active]);
 ```
+
+---
+
+## Internationalization (i18n)
+
+- **`i18n.ts`** initializes `react-i18next` with language detection and loads `locales/en|ar/translation.json`.
+- The `LanguageSwitch` component toggles the language and sets `document.dir` for RTL layout.
+- **Every visible string** is wrapped in `t(...)` for translation.
+
+### RTL Handling
+
+- MUI's `direction: 'rtl'` is set dynamically in `theme.ts` based on the active language.
+- Custom component styles use logical properties or conditional `sx` values where needed.
 
 ---
 
 ## State Management
 
-- **Global**: `AppContext` for toasts/notifications and other app-wide utilities.
-- **Local**: Component state for dialog visibility, selected service, wizard step, and processing spinner.
+| Scope           | Mechanism                        | Example                                |
+| :-------------- | :------------------------------- | :------------------------------------- |
+| **Global**      | `AppContext`                     | Toast notifications, app-wide config   |
+| **Form**        | `react-hook-form` `FormProvider` | All wizard step data                   |
+| **Component**   | `useState` / `useReducer`        | Dialog visibility, loading states      |
+| **Persistence** | `localStorage`                   | Form draft, chat history, applications |
 
 ---
 
-## UI/Styling
+## AI Integration ("Help Me Write")
 
-- **MUI** with `sx` prop for theme-aware styles and responsive layout.
-- **Cards grid**: equal visual height via `height` + text line-clamping (`WebkitLineClamp`), responsive columns using `sx` (`flexBasis`/`maxWidth`) to guarantee 4-up on desktop.
-- **Accessibility**: labeled controls, ARIA where useful, keyboard-friendly components, consistent helper text space (`" "` when no error) to prevent layout jumps.
+Located in `src/components/HelpMeWriteDialog.tsx` and `src/services/api.ts`.
 
----
+### Flow
 
-## Routing
+1.  User clicks "Help Me Write" button on a text field in Step 3.
+2.  A seed prompt is constructed from the user's existing form data (e.g., employment status, income).
+3.  A request is sent to the **OpenAI Chat Completions API** (`gpt-3.5-turbo`).
+4.  The generated text is displayed in a dialog.
+5.  User can **Accept**, **Edit**, or **Discard** the suggestion.
 
-- **Routes:** `/`, `/apply`, `/submitted` using `<BrowserRouter>`.
-- **Programmatic nav:** `useNavigate()` for opening the wizard and redirecting to success.
-- **Defensive testing:** Temporarily used `onClick={() => navigate("/apply")}` to verify routing vs. overlay issues.
+### Error Handling
 
----
-
-## Persistence
-
-- **`useFormPersist`**: watches form values and writes to `localStorage` under `tamm:ss:draft`.
-- On successful submit, the draft key is cleared.
+- API timeouts and failures are caught gracefully.
+- A user-friendly error message is displayed within the dialog.
 
 ---
 
-## AI Assistance (“Help Me Write”)
+## Theming
 
-- Step 3 includes **HelpMeWriteDialog** for the 3 textareas:
+The custom theme in `src/theme.ts` is inspired by the official TAMM government portal.
 
-  - A **seed prompt** is built from user context (`getValues().family`) and the specific field (“financial”, “employment”, “reason”).
-  - The dialog supports **Edit / Accept / Discard** UX.
-  - The actual OpenAI call is abstracted behind `services/api.ts` (currently mocked); ready to wire to `/v1/chat/completions`.
+### Color Palette
 
----
+| Role              | Color                   | Usage                         |
+| :---------------- | :---------------------- | :---------------------------- |
+| **Primary**       | `#169F9F` (Teal)        | Buttons, links, active states |
+| **Primary Hover** | `#0eecda` (Bright Cyan) | Button hover effects          |
+| **Secondary**     | `#12121b` (Dark Grey)   | Text, backgrounds             |
+| **Success**       | `#2B8432`               | Validation success indicators |
 
-## Environments & Secrets
+### Component Overrides
 
-- **`.env.example`** documents required variables (e.g., `VITE_OPENAI_API_KEY`).
-- Use **Vercel env** settings for deployment (never commit secrets).
-- **`.gitignore`** excludes `.env*`, `node_modules`, build output.
+- **Buttons:** Pill-shaped (`borderRadius: 160`) with hover animations.
+- **Cards/Paper:** Subtle shadows and `12px` border radius.
+- **TextFields:** Focus glow effect using the primary color.
 
 ---
 
 ## Deployment
 
-- Vite SPA fits on **Vercel**:
+### Vercel (Recommended)
 
-  - Set **Framework Preset:** “Vite”.
-  - Configure **Environment Variables** in Vercel Dashboard.
-  - If you later introduce API routes, prefix client env as `VITE_...`.
+1.  Push code to GitHub.
+2.  Import project in Vercel, select **Vite** preset.
+3.  Add `VITE_OPENAI_API_KEY` to environment variables.
+4.  Deploy.
 
-- For client-only routes, Vercel’s static config is fine; no rewrites needed with BrowserRouter defaults.
+### Static Hosting
 
----
-
-## Gotchas & Lessons
-
-- **`useWatch` on entire form** can thrash renders → use targeted `trigger()`/subscriptions or step-scoped watch.
-- **Overlays / banners** can intercept clicks → prefer `pointerEvents: "none"` for decorative layers and control stacking contexts with `zIndex`.
-- **Select sizing**: MUI `<TextField select>` can shrink; enforce `minWidth` and padding via `sx` or a reusable `<FormSelect>`.
+- The Vite build output (`dist/`) is a fully static SPA.
+- No server-side rewrites are needed for `BrowserRouter`.
 
 ---
 
-## Future Enhancements
-
-- **MUI RTL cache** (Emotion + `stylis-plugin-rtl`) for full RTL-aware paddings/margins.
-- **Unit tests** for schema & step gating (React Testing Library).
-- **Server integration**: replace mock `submitApplication` with a backend endpoint and map server-side errors to RHF.
-- **PDF receipt** on success (download JSON/PDF with submitted data).
-- **Analytics** for drop-offs per step, auto-save timestamps, etc.
-
----
-
-## Appendix — Key Constants & Schema
-
-**`constants/defaultValues.ts`**
-
-```ts
-export const DEFAULT_VALUES = {
-  /* ApplicationFormType defaults */
-};
-```
-
-**`constants/stepFields.ts`**
-
-```ts
-export const STEP_FIELDS = [
-  ["personal.name", "personal.nationalId" /* ... */],
-  ["family.maritalStatus" /* ... */],
-  ["situation.financialSituation" /* ... */],
-] as const;
-```
-
-**`schema/applicationSchema.ts`**
-
-```ts
-export const buildApplicationSchema = (t: TFunction) =>
-  z.object({
-    /* ... */
-  });
-export type ApplicationFormType = {
-  /* ... */
-};
-```
-
-Awesome—here are Mermaid diagrams you can paste into your **README.md** under an “Architecture Diagrams” section.
-
----
-
-## 🧭 Architecture Diagrams (Mermaid)
-
-### 1) User Journey: Apply → Submit → Confirmation (Sequence)
+## Sequence Diagram: User Journey
 
 ```mermaid
 sequenceDiagram
@@ -269,37 +225,37 @@ sequenceDiagram
   participant RHF as react-hook-form
   participant Z as Zod Schema
   participant LS as localStorage
-  participant API as submitApplication (mock)
-  participant S as Success Page (/submitted)
+  participant API as Mock API
+  participant S as Success (/submitted)
 
-  U->>H: Click "Open" (Social Support)
+  U->>H: Clicks "Social Support - Open"
   H->>W: navigate("/apply")
 
-  Note over W,RHF: Step 1/2/3 fields are controlled via RHF + Controller
+  loop For each Step (1-4)
+    U->>W: Fills in form fields
+    W->>RHF: setValue / trigger
+    RHF->>Z: Validate step fields
+    Z-->>RHF: Valid / Invalid
+    RHF-->>W: canProceed = true/false
+    W->>LS: Persist draft
+    U->>W: Clicks "Next"
+  end
 
-  U->>W: Fill Step 1 (personal)
-  W->>RHF: setValue / trigger
-  RHF->>Z: validate step fields
-  Z-->>RHF: valid/invalid
-  RHF-->>W: canProceed = true/false
-  W->>LS: Persist draft (useFormPersist)
-
-  U->>W: Next → Step 2 → Step 3
-  W->>RHF: trigger current step fields on change
-  RHF->>Z: validate (mode: onTouched, reValidate: onChange)
-  Z-->>RHF: valid/invalid
-
-  U->>W: Click "Submit Application"
+  U->>W: Clicks "Submit Application"
   W->>RHF: handleSubmit(data)
-  RHF-->>W: validated data
+  RHF-->>W: Validated data
   W->>API: submitApplication(data)
-  activate API
-  API-->>W: {status: 200}
-  deactivate API
-
-  W->>LS: removeItem("tamm:ss:draft")
-  W->>S: navigate("/submitted", { state: { reference } })
-  U->>S: Sees success + Reference No.
+  API-->>W: { status: 200 }
+  W->>LS: Save application, remove draft
+  W->>S: navigate("/submitted", { state: { ref } })
+  U->>S: Sees success message & reference number
 ```
 
 ---
+
+## Lessons Learned & Gotchas
+
+- **`useWatch` on the entire form** causes performance issues. Target specific fields.
+- **Overlay elements** (banners, decorative images) can intercept clicks. Use `pointerEvents: 'none'`.
+- **MUI Select:** Can shrink unexpectedly. Enforce `minWidth` via `sx`.
+- **RTL layouts:** Test thoroughly. Not all MUI components handle RTL perfectly out of the box.
