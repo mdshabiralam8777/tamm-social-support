@@ -1,6 +1,6 @@
 import React from "react";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
-import { useApp } from "../context/AppContext";
+import { useApp } from "../../context/AppContext";
 
 const LanguageSwitch: React.FC = () => {
   const { lang, setLang } = useApp();

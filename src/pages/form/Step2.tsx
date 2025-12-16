@@ -6,7 +6,7 @@ import {
   type ControllerFieldState,
 } from "react-hook-form";
 import { useStep2Fields } from "../../hooks/useStep2Fields";
-import ValidatedTextField from "../../components/ValidatedTextField";
+import ValidatedTextField from "../../components/form/ValidatedTextField";
 
 const Step2: React.FC = () => {
   const { control } = useFormContext();

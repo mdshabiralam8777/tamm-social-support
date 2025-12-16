@@ -3,7 +3,7 @@ import { TextField, MenuItem } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { Controller, useFormContext } from "react-hook-form";
 import { useStep1Fields } from "../../hooks/useStep1Fields";
-import ValidatedTextField from "../../components/ValidatedTextField";
+import ValidatedTextField from "../../components/form/ValidatedTextField";
 import { formatEmiratesId, getMaxDobFor18Plus } from "../../utils/inputUtils";
 
 const Step1: React.FC = () => {

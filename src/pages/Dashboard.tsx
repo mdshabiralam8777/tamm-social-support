@@ -5,7 +5,6 @@ import {
   Typography,
   Card,
   CardContent,
-  Chip,
   Button,
   LinearProgress,
   Alert,
@@ -13,11 +12,9 @@ import {
 import Grid from "@mui/material/Grid";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import DescriptionIcon from "@mui/icons-material/Description";
-import CancelIcon from "@mui/icons-material/Cancel";
-import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import { StatusChip, getStatusColor, EmptyState } from "../components/common";
+import { formatDate } from "../utils/dateUtils";
 
 interface Application {
   id: string;
@@ -37,7 +34,7 @@ interface Application {
 }
 
 const Dashboard: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   // Load applications from localStorage
@@ -112,53 +109,6 @@ const Dashboard: React.FC = () => {
     loadApplications();
   }, []);
 
-  const getStatusColor = (
-    status: Application["status"]
-  ): "primary" | "secondary" | "error" | "warning" | "info" | "success" => {
-    switch (status) {
-      case "submitted":
-        return "info";
-      case "in_review":
-        return "warning";
-      case "pending_documents":
-        return "secondary";
-      case "approved":
-        return "success";
-      case "rejected":
-        return "error";
-      default:
-        return "primary";
-    }
-  };
-
-  const getStatusIcon = (
-    status: Application["status"]
-  ): React.ReactElement | null => {
-    switch (status) {
-      case "submitted":
-        return <DescriptionIcon fontSize="small" />;
-      case "in_review":
-        return <HourglassEmptyIcon fontSize="small" />;
-      case "pending_documents":
-        return <PendingActionsIcon fontSize="small" />;
-      case "approved":
-        return <CheckCircleIcon fontSize="small" />;
-      case "rejected":
-        return <CancelIcon fontSize="small" />;
-      default:
-        return null;
-    }
-  };
-
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(i18n.language === "ar" ? "ar-AE" : "en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   const getTimeAgo = (dateString: string): string => {
     const date = new Date(dateString);
     const now = new Date();
@@ -179,42 +129,13 @@ const Dashboard: React.FC = () => {
   if (applications.length === 0) {
     return (
       <Container maxWidth="md" sx={{ py: { xs: 4, sm: 6 } }}>
-        <Box
-          sx={{
-            textAlign: "center",
-            py: { xs: 4, sm: 8 },
-          }}
-        >
-          <DescriptionIcon
-            sx={{
-              fontSize: { xs: 80, sm: 120 },
-              color: "action.disabled",
-              mb: 2,
-            }}
-          />
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{ fontSize: { xs: "1.5rem", sm: "2rem" } }}
-          >
-            {t("dashboard.noApplications")}
-          </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            sx={{ mb: 4, fontSize: { xs: "0.875rem", sm: "1rem" } }}
-          >
-            {t("dashboard.noApplicationsMessage")}
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={() => navigate("/apply")}
-            sx={{ fontSize: { xs: "0.875rem", sm: "1rem" } }}
-          >
-            {t("dashboard.applyNow")}
-          </Button>
-        </Box>
+        <EmptyState
+          icon={<DescriptionIcon sx={{ fontSize: { xs: 80, sm: 120 } }} />}
+          title={t("dashboard.noApplications")}
+          description={t("dashboard.noApplicationsMessage")}
+          actionLabel={t("dashboard.applyNow")}
+          onAction={() => navigate("/apply")}
+        />
       </Container>
     );
   }
@@ -271,14 +192,9 @@ const Dashboard: React.FC = () => {
                       gap: 1,
                     }}
                   >
-                    <Chip
-                      {...(getStatusIcon(application.status) && {
-                        icon: getStatusIcon(application.status)!,
-                      })}
+                    <StatusChip
+                      status={application.status}
                       label={t(`dashboard.status.${application.status}`)}
-                      color={getStatusColor(application.status)}
-                      size="small"
-                      sx={{ fontWeight: 600 }}
                     />
                     <Typography
                       variant="caption"

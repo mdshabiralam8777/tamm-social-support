@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu"; // ✨ ADDED: The "hamburger" i
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import LanguageSwitch from "./LanguageSwitch";
-import logo from "../assets/svgs/tamm-log.svg";
+import logo from "../../assets/svgs/tamm-log.svg";
 
 const NavBar: React.FC = () => {
   const { t } = useTranslation();

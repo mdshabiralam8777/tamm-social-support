@@ -1,1 +1,1 @@
-{"root":["./src/hooks/useformpersist.test.ts","./src/schema/applicationschema.test.ts","./src/services/api.test.ts","./src/components/formstepper.test.tsx","./src/components/validatedtextfield.test.tsx","./jest.setup.ts"],"version":"5.9.3"}
+{"root":["./src/hooks/useformpersist.test.ts","./src/schema/applicationschema.test.ts","./src/services/api.test.ts","./src/components/form/formstepper.test.tsx","./src/components/form/validatedtextfield.test.tsx","./jest.setup.ts"],"version":"5.9.3"}
