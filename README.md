@@ -33,6 +33,7 @@ A **production-ready**, **accessible**, and **bilingual (EN/AR)** web applicatio
 | Category        | Technology                         |
 | :-------------- | :--------------------------------- |
 | **Framework**   | React 18 (Vite)                    |
+| **Backend**     | Node.js + Express (TypeScript)     |
 | **Language**    | TypeScript (Strict Mode)           |
 | **UI**          | Material UI v5 + Custom TAMM Theme |
 | **Forms**       | react-hook-form + Zod              |
@@ -55,33 +56,57 @@ A **production-ready**, **accessible**, and **bilingual (EN/AR)** web applicatio
 ```bash
 git clone https://github.com/mdshabiralam8777/tamm-social-support.git
 cd tamm-social-support
+
+# Install frontend dependencies
 npm install
+
+# Install backend dependencies
+cd server && npm install && cd ..
 ```
 
 ### 2. Configure Environment
 
-Create a `.env` file in the project root:
+**Backend (server/.env):** Create this file with your OpenAI key:
 
 ```env
-VITE_OPENAI_API_KEY=sk-your_api_key_here
-VITE_OPENAI_MODEL=gpt-3.5-turbo
+OPENAI_API_KEY=sk-your_api_key_here
+OPENAI_MODEL=gpt-3.5-turbo
+PORT=3001
+CORS_ORIGIN=http://localhost:5173
 ```
 
-> ⚠️ **Important:** Do not commit `.env` to version control. It is already in `.gitignore`.
+**Frontend (.env):** Create this file to point to the backend:
 
-### 3. Run the Development Server
+```env
+VITE_API_BASE_URL=http://localhost:3001
+```
+
+> ⚠️ **Important:** Do not commit `.env` files to version control. They are already in `.gitignore`.
+
+### 3. Run the Development Servers
+
+You need to run **both** the backend and frontend:
 
 ```bash
+# Terminal 1 - Start the backend server
+cd server && npm run dev
+
+# Terminal 2 - Start the frontend
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+- Frontend: [http://localhost:5173](http://localhost:5173)
+- Backend API: [http://localhost:3001](http://localhost:3001)
 
 ### 4. Build for Production
 
 ```bash
+# Build frontend
 npm run build
 npm run preview  # To preview the production build
+
+# Build backend
+cd server && npm run build
 ```
 
 ---

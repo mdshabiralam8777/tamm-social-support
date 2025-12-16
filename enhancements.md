@@ -81,9 +81,27 @@ This document outlines the additional features, technical improvements, and UX e
 
 ---
 
+## ✅ Recently Completed
+
+### 4. Backend API for Secure AI Integration
+
+**Goal:** Secure the OpenAI API key by moving it to a backend server.
+
+- **Implementation:** A Node.js/Express backend server in the `server/` directory.
+- **Features:**
+  - RESTful API endpoints: `/api/chat` and `/api/help-me-write`
+  - CORS configuration for frontend origin
+  - Server-side OpenAI integration with secure API key storage
+  - Error handling and request validation
+  - TypeScript support with full type safety
+
+**Why this matters:** Previously, the OpenAI API key was exposed in the frontend via `VITE_OPENAI_API_KEY`. This was a security vulnerability. Now, the key is stored only on the server.
+
+---
+
 ## 🔮 Future Roadmap (Planned)
 
-- **Real Backend Integration:** Replace mock services with Node.js/Express endpoints.
 - **Authentication:** Integrate UAE Pass or standard OAuth.
 - **PDF Generation:** Allow users to download a signed PDF receipt of their application.
 - **Real-time Notifications:** WebSockets for instant status updates.
+- **Database Integration:** Replace mock data with PostgreSQL/MongoDB persistence.
