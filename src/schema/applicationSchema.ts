@@ -1,4 +1,8 @@
 import { z } from "zod";
+import { calculateAge } from "../utils/inputUtils";
+
+// Name regex: allows letters (Latin and Arabic), spaces, hyphens, apostrophes
+const NAME_REGEX = /^[\p{L}\s'-]+$/u;
 
 export const applicationSchema = z.object({
   personal: z.object({
@@ -6,7 +10,11 @@ export const applicationSchema = z.object({
       .string({ required_error: "Please enter your full name" })
       .trim()
       .min(2, "Your name must be at least 2 characters")
-      .max(100, "Name is too long (maximum 100 characters)"),
+      .max(100, "Name is too long (maximum 100 characters)")
+      .regex(
+        NAME_REGEX,
+        "Name can only contain letters, spaces, hyphens, and apostrophes"
+      ),
     nationalId: z
       .string({ required_error: "Please enter your Emirates ID" })
       .trim()
@@ -21,7 +29,11 @@ export const applicationSchema = z.object({
       .refine(
         (v) => !Number.isNaN(Date.parse(v)),
         "Enter a valid date of birth."
-      ),
+      )
+      .refine((v) => {
+        const age = calculateAge(v);
+        return age >= 18;
+      }, "You must be at least 18 years old to apply."),
     gender: z.enum(["male", "female", "other"], {
       required_error: "Please select your gender.",
       invalid_type_error: "Please select a valid gender option.",
@@ -33,15 +45,18 @@ export const applicationSchema = z.object({
     city: z
       .string({ required_error: "Please enter your city." })
       .trim()
-      .min(2, "City must be at least 2 characters."),
+      .min(2, "City must be at least 2 characters.")
+      .regex(NAME_REGEX, "City can only contain letters and spaces"),
     state: z
       .string({ required_error: "Please enter your state." })
       .trim()
-      .min(2, "State must be at least 2 characters."),
+      .min(2, "State must be at least 2 characters.")
+      .regex(NAME_REGEX, "State can only contain letters and spaces"),
     country: z
       .string({ required_error: "Please enter your country." })
       .trim()
-      .min(2, "Country must be at least 2 characters."),
+      .min(2, "Country must be at least 2 characters.")
+      .regex(NAME_REGEX, "Country can only contain letters and spaces"),
     phone: z
       .string({ required_error: "Please enter your phone number" })
       .trim()
@@ -66,6 +81,10 @@ export const applicationSchema = z.object({
       .trim()
       .min(2, "Spouse name must be at least 2 characters")
       .max(100, "Name is too long")
+      .regex(
+        NAME_REGEX,
+        "Name can only contain letters, spaces, hyphens, and apostrophes"
+      )
       .optional()
       .or(z.literal("")),
     dependents: z.coerce
@@ -122,7 +141,11 @@ export const applicationSchema = z.object({
       .string({ required_error: "Please enter an emergency contact name" })
       .trim()
       .min(2, "Contact name must be at least 2 characters")
-      .max(100, "Name is too long"),
+      .max(100, "Name is too long")
+      .regex(
+        NAME_REGEX,
+        "Name can only contain letters, spaces, hyphens, and apostrophes"
+      ),
     emergencyContactPhone: z
       .string({ required_error: "Please enter an emergency contact phone" })
       .trim()

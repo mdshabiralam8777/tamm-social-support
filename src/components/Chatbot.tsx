@@ -87,6 +87,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [showQuickReplies, setShowQuickReplies] = useState(true);
+  const [userHasInteracted, setUserHasInteracted] = useState(false);
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Save to localStorage whenever messages change
   useEffect(() => {
@@ -102,6 +104,31 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  // Idle timer to show quick replies after 30 seconds of inactivity
+  const resetIdleTimer = () => {
+    // Clear existing timer
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    // Hide quick replies when user is active (if they've interacted before)
+    if (userHasInteracted) {
+      setShowQuickReplies(false);
+    }
+    // Set new timer to show quick replies after 30 seconds
+    idleTimerRef.current = setTimeout(() => {
+      setShowQuickReplies(true);
+    }, 30000); // 30 seconds
+  };
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (idleTimerRef.current) {
+        clearTimeout(idleTimerRef.current);
+      }
+    };
+  }, []);
+
   const handleSend = async (messageText?: string) => {
     const textToSend = messageText || input.trim();
     if (textToSend === "") return;
@@ -113,6 +140,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     setMessages(newMessages);
     setInput("");
     setLoading(true);
+    setUserHasInteracted(true);
+    resetIdleTimer();
     setShowQuickReplies(false);
 
     try {
@@ -124,8 +153,8 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
         ...prev,
         { text: botResponse, sender: "bot", timestamp: new Date() },
       ]);
-      // Show quick replies after bot response
-      setShowQuickReplies(true);
+      // Start idle timer - quick replies will show after 30 seconds
+      resetIdleTimer();
     } catch (error) {
       const errorMessage = t("chatbot.error");
       setMessages((prev) => [
@@ -401,7 +430,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           size="small"
           placeholder={t("chatbot.placeholder")}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            if (e.target.value.length > 0) {
+              setUserHasInteracted(true);
+              resetIdleTimer();
+            }
+          }}
           onKeyPress={(e) => e.key === "Enter" && !loading && handleSend()}
           disabled={loading}
           sx={{

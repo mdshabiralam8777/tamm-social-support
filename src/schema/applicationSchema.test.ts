@@ -109,6 +109,87 @@ describe("applicationSchema", () => {
         expect(result.error.issues[0].message).toContain("valid UAE phone");
       }
     });
+
+    it("should reject applicants under 18 years old", () => {
+      const today = new Date();
+      const underageDob = new Date(
+        today.getFullYear() - 17,
+        today.getMonth(),
+        today.getDate()
+      )
+        .toISOString()
+        .split("T")[0];
+
+      const result = applicationSchema.safeParse({
+        personal: { ...validPersonal, dob: underageDob },
+        family: validFamily,
+        situation: validSituation,
+        documents: validDocuments,
+      });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain("at least 18 years");
+      }
+    });
+
+    it("should accept applicants exactly 18 years old", () => {
+      const today = new Date();
+      const exactlyEighteen = new Date(
+        today.getFullYear() - 18,
+        today.getMonth(),
+        today.getDate()
+      )
+        .toISOString()
+        .split("T")[0];
+
+      const result = applicationSchema.safeParse({
+        personal: { ...validPersonal, dob: exactlyEighteen },
+        family: validFamily,
+        situation: validSituation,
+        documents: validDocuments,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept name with Arabic characters", () => {
+      const result = applicationSchema.safeParse({
+        personal: { ...validPersonal, name: "محمد أحمد" },
+        family: validFamily,
+        situation: validSituation,
+        documents: validDocuments,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should reject name containing numbers", () => {
+      const result = applicationSchema.safeParse({
+        personal: { ...validPersonal, name: "John123" },
+        family: validFamily,
+        situation: validSituation,
+        documents: validDocuments,
+      });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain(
+          "only contain letters"
+        );
+      }
+    });
+
+    it("should reject name containing special characters", () => {
+      const result = applicationSchema.safeParse({
+        personal: { ...validPersonal, name: "John@Doe!" },
+        family: validFamily,
+        situation: validSituation,
+        documents: validDocuments,
+      });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain(
+          "only contain letters"
+        );
+      }
+    });
   });
 
   describe("family section", () => {
