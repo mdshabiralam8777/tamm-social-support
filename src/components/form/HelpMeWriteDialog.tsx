@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { helpMeWrite } from "../services/openai";
+import { helpMeWrite } from "../../services/openai";
 
 type Props = {
   open: boolean;

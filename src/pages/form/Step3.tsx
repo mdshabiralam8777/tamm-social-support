@@ -7,7 +7,7 @@ import {
   type ControllerFieldState,
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import HelpMeWriteDialog from "../../components/HelpMeWriteDialog";
+import HelpMeWriteDialog from "../../components/form/HelpMeWriteDialog";
 import { useStep3Fields } from "../../hooks/useStep3Fields";
 
 const Step3: React.FC = () => {

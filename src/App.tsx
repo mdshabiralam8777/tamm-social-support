@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
 import { CssBaseline, Container, Box, Typography, Fab } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/layout/NavBar";
 import Home from "./pages/Home";
 import Wizard from "./pages/form/Wizard";
 import Chatbot from "./components/Chatbot";
@@ -11,7 +11,7 @@ import banner from "./assets/InnerBannerLightBG.jpg";
 import SubmissionSuccess from "./pages/form/SubmissionSuccess";
 import Dashboard from "./pages/Dashboard";
 import ApplicationTracker from "./pages/ApplicationTracker";
-import Footer from "./components/Footer";
+import Footer from "./components/layout/Footer";
 import { useTranslation } from "react-i18next";
 
 const App: React.FC = () => {

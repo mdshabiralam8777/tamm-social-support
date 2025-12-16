@@ -15,7 +15,7 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslation } from "react-i18next";
-import FormStepper from "../../components/FormStepper";
+import FormStepper from "../../components/form/FormStepper";
 import { useFormPersist } from "../../hooks/useFormPersist";
 import { submitApplication } from "../../services/api";
 import { useApp } from "../../context/AppContext";
