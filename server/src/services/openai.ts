@@ -141,6 +141,8 @@ export async function askChatbot(
 /**
  * helpMeWrite:
  * - Generates concise, empathetic hardship descriptions for government social support forms.
+ * - ALWAYS uses previous form context (prompt) as background
+ * - If userInput is provided, improves it while maintaining form context
  */
 export async function helpMeWrite(
   prompt: string,
@@ -160,11 +162,20 @@ export async function helpMeWrite(
     languageInstruction,
   ];
 
-  const userMessages = [prompt];
+  // Always include the form context as background information
+  const userMessages: string[] = [];
+
   if (userInput && userInput.trim().length > 0) {
+    // When user provides input: use BOTH form context AND their input
     userMessages.push(
-      `The applicant has already written this text. Improve it naturally in the same tone and language, preserving meaning and clarity:\n\n"${userInput.trim()}"`
+      `BACKGROUND CONTEXT FROM APPLICATION FORM:\n${prompt}\n\n` +
+        `THE APPLICANT HAS ALREADY WRITTEN:\n"${userInput.trim()}"\n\n` +
+        `Please improve and expand the applicant's text while incorporating relevant details from the background context. ` +
+        `Preserve their voice and meaning, but make it more complete using the form context above.`
     );
+  } else {
+    // When no user input: generate based on form context only
+    userMessages.push(prompt);
   }
 
   return callOpenAI(systemMessages, userMessages);
