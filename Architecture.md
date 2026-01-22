@@ -15,6 +15,7 @@ This document provides a technical deep-dive into the **TAMM Social Support Port
 | **Internationalization** | react-i18next         | Multi-language support (EN/AR/RTL)                   |
 | **Routing**              | react-router-dom v6   | Declarative client-side routing                      |
 | **State**                | React Context API     | Lightweight global state (notifications, app config) |
+| **Backend API**          | Express + TypeScript  | Secure proxy for AI requests & business logic        |
 | **Persistence**          | LocalStorage          | Draft saving, chat history, application tracking     |
 | **AI**                   | OpenAI API (GPT-3.5)  | Text generation for "Help Me Write" feature          |
 
@@ -24,6 +25,14 @@ This document provides a technical deep-dive into the **TAMM Social Support Port
 
 ```
 tamm-social-support/
+tamm-social-support/
+├── server/                     # Backend API (Node.js/Express)
+│   ├── src/
+│   │   ├── routes/             # API Router definitions
+│   │   ├── services/           # Business logic (OpenAI, data mapping)
+│   │   └── index.ts            # Server entry point
+│   ├── .env                    # Secrets (API Keys)
+│   └── package.json
 ├── public/                     # Static assets
 ├── src/
 │   ├── assets/                 # Images, icons, mock data
@@ -103,6 +112,31 @@ tamm-social-support/
 
 - Displays all tracked applications.
 - Shows status (Submitted, In Review, Approved), timeline, and progress.
+
+---
+
+## Backend Architecture
+
+The application includes a lightweight **Node.js + Express** server to handle secure API operations. This "Backend for Frontend" (BFF) pattern ensures API keys are never exposed to the client and centralizes AI logic.
+
+### Structure
+
+- **Entry Point:** `server/src/index.ts` initializes the server, CORS policies, and global middleware.
+- **Routes:** `server/src/routes/` separates endpoint definitions (e.g., `ai.ts`) from logic.
+- **Services:** `server/src/services/` contains pure business logic. `openai.ts` handles the integration, error parsing, and prompt engineering.
+
+### AI Service Layer
+
+The backend is not just a proxy; it adds intelligence to the requests:
+
+1.  **Context Injection:**
+    Methods in `openai.ts` (`askChatbot`, `helpMeWrite`) inject system instructions dependent on the user's language (EN/AR) and the application context.
+
+2.  **Taxonomy Matching:**
+    Before calling OpenAI, the server matches user prompts against a predefined list of TAMM services (`tammInformation.ts`). If a match is found (e.g., "Golden Visa"), specific instructions about that service are injected into the system prompt to ensure accuracy.
+
+3.  **Abuse Detection:**
+    A basic filter (`profanity.ts`) checks inputs before processing to prevent misuse.
 
 ---
 
