@@ -114,16 +114,24 @@ cd server && npm run build
 ## 📂 Project Structure
 
 ```
-src/
-├── components/     # Reusable UI (NavBar, Footer, Chatbot, Stepper)
-├── pages/          # Route views (Home, Dashboard, Wizard steps)
-├── hooks/          # Custom hooks (useFormPersist)
-├── services/       # API layer (OpenAI, mock backend)
-├── schema/         # Zod validation schemas (i18n-aware)
-├── constants/      # Step definitions, default form values
-├── context/        # Global state providers (AppContext)
-├── locales/        # Translation files (en, ar)
-└── theme.ts        # Custom MUI theme (TAMM colors)
+tamm-social-support/
+├── server/                     # Backend API (Node.js/Express)
+│   ├── src/
+│   │   ├── routes/             # API Router definitions
+│   │   └── services/           # Business logic (OpenAI)
+│   ├── .env                    # Secrets (API Keys)
+│   └── package.json
+├── public/                     # Static assets
+├── src/                        # Frontend Application
+│   ├── components/             # Reusable UI (NavBar, Footer, Chatbot, Stepper)
+│   ├── pages/                  # Route views (Home, Dashboard, Wizard steps)
+│   ├── hooks/                  # Custom hooks (useFormPersist)
+│   ├── services/               # API layer (OpenAI, mock backend)
+│   ├── schema/                 # Zod validation schemas (i18n-aware)
+│   ├── constants/              # Step definitions, default form values
+│   ├── context/                # Global state providers (AppContext)
+│   ├── locales/                # Translation files (en, ar)
+│   └── theme.ts                # Custom MUI theme (TAMM colors)
 ```
 
 See [Architecture.md](./Architecture.md) for a detailed explanation of the data flow and design decisions.
