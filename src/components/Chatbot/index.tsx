@@ -183,12 +183,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       elevation={5}
       sx={{
         position: "fixed",
-        bottom: { xs: 0, sm: 100 },
+        top: { xs: 0, sm: "auto" },
+        bottom: { xs: "auto", sm: 100 },
         right: { xs: 0, sm: 20 },
         left: { xs: 0, sm: "auto" },
         width: { xs: "100%", sm: 380, md: 400 },
-        height: { xs: "100vh", sm: 550 },
-        maxHeight: { xs: "100vh", sm: "calc(100vh - 120px)" },
+        height: { xs: "100dvh", sm: 550 },
+        maxHeight: { xs: "100dvh", sm: "calc(100vh - 120px)" },
         display: "flex",
         flexDirection: "column",
         zIndex: 1300,
