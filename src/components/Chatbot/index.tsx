@@ -133,7 +133,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     try {
       const response = await askChatbot(
         textToSend,
-        i18n.language as "en" | "ar"
+        i18n.language as "en" | "ar",
       );
       setMessages((prev) => [
         ...prev,
@@ -191,7 +191,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
         maxHeight: { xs: "100vh", sm: "calc(100vh - 120px)" },
         display: "flex",
         flexDirection: "column",
-        zIndex: 1000,
+        zIndex: 1300,
         borderRadius: { xs: 0, sm: 2 },
         boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
       }}
