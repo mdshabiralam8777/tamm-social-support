@@ -72,6 +72,7 @@ const App: React.FC = () => {
           </Routes>
         </Container>
         <Footer />
+        {/* Hide FAB on mobile when chatbot is open to prevent overlap with send button */}
         <Fab
           color="primary"
           aria-label="chat"
@@ -81,10 +82,11 @@ const App: React.FC = () => {
             right: { xs: 16, sm: 20 },
             width: { xs: 48, sm: 56 },
             height: { xs: 48, sm: 56 },
+            display: { xs: isChatbotOpen ? "none" : "flex", sm: "flex" },
           }}
           onClick={toggleChatbot}
         >
-          <ChatIcon fontSize={isChatbotOpen ? "small" : "medium"} />
+          <ChatIcon fontSize="medium" />
         </Fab>
         {isChatbotOpen && <Chatbot onClose={toggleChatbot} />}
       </Box>
